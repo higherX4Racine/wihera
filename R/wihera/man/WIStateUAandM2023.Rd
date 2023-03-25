@@ -5,25 +5,25 @@
 \alias{WIStateUAandM2023}
 \title{A tibble of data from the last sheet of an example spreadsheet from 2023}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 660 rows and 8 columns.
+a tibble with 8 fields:
+\itemize{
+\item \verb{Source Tab} \emph{character} - Whence the data came.
+\item \code{Degree/Certificate} \emph{character} - 1y, 2y, 2y-4y, or Bachelor's degree
+\item \code{Measure} \emph{character} - Y-axis labels when \code{Outcome} is plotted.
+\item \verb{Enrollment at entry} \emph{character} - Full- or Part-time
+\item \verb{Demographic Group} \emph{character} - Different factors like race or age.
+\item \code{Detail} \emph{character} - Levels for the different \verb{Demographic Group} factors.
+\item \code{Cohort} \emph{numeric} - Denominator values for percentage calculations.
+\item \code{Outcome} \emph{numeric} - Values for reporting or for numerators of percents.
+}
+}
+\source{
+\href{https://www.herawisconsin.org/}{The Higher Education Regional Alliance}
 }
 \usage{
 WIStateUAandM2023
 }
 \description{
 The last sheet in the 2023 template worksheet is an aggregate long table
-It  has the following fields:
-}
-\details{
-\itemize{
-\item \verb{Source Tab} \emph{character} Whence the data came.
-\item \code{Degree/Certificate} \emph{character} 1y, 2y, 2y-4y, or Bachelor's degree
-\item \code{Measure} \emph{character} Y-axis labels when \code{Outcome} is plotted.
-\item \verb{Enrollment at entry} \emph{character} Full- or Part-time
-\item \verb{Demographic Group} \emph{character} Different factors like race or age.
-\item \code{Detail} \emph{character} Levels for the different \verb{Demographic Group} factors.
-\item \code{Cohort} \emph{numeric} Denominator values for percentage calculations.
-\item \code{Outcome} \emph{numeric} Values for reporting or for numerators of percents.
-}
 }
 \keyword{datasets}
