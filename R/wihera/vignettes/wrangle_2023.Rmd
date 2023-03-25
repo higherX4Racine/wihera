@@ -1,0 +1,446 @@
+---
+title: "Wrangle Spring 2023 Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Wrangle Spring 2023 Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  cache = TRUE
+)
+```
+
+```{r setup}
+library(magrittr)
+library(wihera)
+
+HERA_PATH_2023 <- Sys.getenv("DATA_PATH") %>%
+    file.path(
+        "Downloads",
+        "HERA",
+        "Data Spring 2023"
+    )
+
+TEMPLATE_REGIONS <- list(
+    `Retention` = list(
+        fields = list(rows = 1:5, cols = 1:3),
+        labels = list(rows = 6:41, cols = 1)
+    ),
+    `Momentum in First Year` = list(
+        fields = list(rows = 1:5, cols = 1:10),
+        labels = list(rows = 6:41, cols = 1)
+    ),
+    `Math Pathways` = list(
+        fields = list(rows = 1:6, cols = 1:9),
+        labels = list(rows = 7:11, cols = 1)
+    ),
+    `Graduation - Programs < 4 years` = list(
+        fields = list(rows = 1:7, cols = 1:7),
+        labels = list(rows = 8:43, cols = 1:2)
+    ),
+    `Graduation - Bachelors degrees` = list(
+        fields = list(rows = 1:5, cols = 2:5),
+        labels = list(rows = 6:41, cols = 2)
+    ),
+    `Graduates Time and Credits` = list(
+        fields = list(rows = 1:5, cols = 1:5),
+        labels = list(rows = 6:149, cols = 1:2)
+    )
+)
+```
+
+Here are the data files that I will use.
+
+```{r import_the_data}
+HERA_FILES <- dir(HERA_PATH_2023,
+                  pattern = "xlsx")
+
+SCHOOL_INFO <- tibble::tribble(
+    ~ School,                            ~ Search,
+    "Cardinal Stritch University",       "Stritch",
+    "Carroll University",                "Carroll",
+    "Carthage College",                  "Carthage",
+    "Concordia University",              "Concordia",
+    "Gateway Technical College",         "Gateway",
+    "Marquette University",              "Marquette",
+    "Milwaukee School of Engineering",   "MSOE",
+    "Mt Mary College",                   "Mary",
+    "UW-Parkside",                       "Parkside",
+    "UW-Whitewater",                     "Whitewater",
+    "Waukesha County Technical College", "WCTC",
+    "WI Lutheran College",               "Lutheran" 
+) %>%
+    dplyr::mutate(
+        File = purrr::map_chr(glue::glue("^(?!~).*{.data$Search}"),
+                              ~ stringr::str_subset(HERA_FILES,
+                                                    .))
+    )
+
+template_sheets <- read_template(
+    file.path(HERA_PATH_2023,
+              "2023 HERA Data Submission form.xlsx")
+)
+
+school_templates <- SCHOOL_INFO$File %>%
+    expand_and_name_files(
+        HERA_PATH_2023,
+        SCHOOL_INFO$School
+    ) %>%
+    purrr::map(
+        read_template
+    ) %>%
+    purrr::transpose()
+```
+
+## Things Tableau Didn't Catch:
+
+- places where numerators were excluded (because < 10) but denominator
+
+## Template Checking
+
+There is a template sheet that each school was supposed to use to submit its data.
+Like many spreadsheets, it encodes some of its information in cell locations.
+If the schools changed the order of any of the column or row labels then there will be a mismatch between what they intended to report and what the automated import system will say that they reported.
+The following code checks each submission against the template to catch mismatches.
+
+```{r template_checking, results="asis"}
+sheet_checks <- TEMPLATE_REGIONS %>%
+    purrr::imap( ~ check_sheet(school_templates[[.y]],
+                               .x,
+                               template_sheets[[.y]])
+    )
+
+purrr::iwalk(sheet_checks,
+             function(.check, .sheet) {
+                 cat("####", .sheet)
+                 .check %>%
+                     dplyr::select(!"messages") %>%
+                     knitr::kable() %>%
+                     print()
+             }
+)
+```
+
+## Definitions from the Template
+
+These definitions are intended as guidance for completing the template.
+If alternative definitions or measures are more appropriate for your institution, please meet the intent as best you can and include notes of differences.
+
+### Populations
+
+Population definitions are intended to align with IPEDS where applicable.
+
+#### First-time cohort
+
+First-time degree/certificate-seeking undergraduates entering the fall term.
+Students should have no previous college credits other than credits earned while enrolled in high school.
+Students admitted for fall who begin enrollment in the summer also may be included.
+If the first time cohort is less than 10, suppress the data.
+
+#### Full-time
+
+Enrolled for 12 or more semester credits (or 12 or more quarter credits or 24 or more contact hours a week) at the beginning of the term.
+
+#### Part-time
+
+Enrolled for less than 12 semester credits (or less than 12 quarter credits or less than 24 contact hours a week) at the beginning of the term.
+
+```{r enrollment_status_factor}
+ENROLLMENT_STATUS_LEVELS <- c(
+    "Full-time",
+    "Part-time"
+)
+```
+
+#### Race/ethnicity
+
+As reported to IPEDS
+
+```{r race_factor}
+RACE_LEVELS <- c(
+    "Hispanic",
+    "Black, non-Hispanic",
+    "White, non-Hispanic",
+    "Asian",
+    "Native Hawaiian or other Pacific Islander",
+    "American Indian/Alaska Native",
+    "Two or More Races",
+    "Unknown",
+    "Non-resident Alien"
+)
+
+```
+
+#### Gender
+
+As reported to IPEDS
+
+```{r gender_levels}
+GENDER_LEVELS <- c(
+    "Male",
+    "Female"
+)
+```
+
+#### Age
+
+As of the beginning of the term of entry.
+Students under age 17 may be included in the Age: 17 to 19 category.
+
+```{r age_levels}
+AGE_LEVELS <- tibble::tribble(
+    ~ Level,           ~ `Lower Age`, ~ `Upper Age`,
+    "17-19 years old",            0L,           19L,
+    "20-24 years old",           20L,           24L,
+    "Age 25 and over",           25L,          999L,
+    "Unknown",                    NA,            NA
+)
+```
+
+#### Income
+
+Received Pell Grant in the term of entry.
+Eligibility for Pell Grant in the term of entry may be used as an alternative.
+
+### Degree/certificate programs
+
+Program definitions are intended to align with IPEDS where applicable.
+
+#### Degree/certificate program of less than 2 years
+
+As defined in IPEDS Graduation Rate Survey
+
+#### Degree/certificate program of at least 2 years but less than 4 years
+
+As defined in IPEDS Graduation Rate Survey
+
+#### Bachelor's degree
+
+Bachelor's or equivalent degree as defined in IPEDS Graduation Rate Survey
+
+## Measures
+
+Measures are intended to align with IPEDS where applicable.
+
+### Retention
+
+#### Retention
+
+Number of students in the cohort who enrolled at the beginning of the next fall term.
+Include students who graduated/completed their program within one year, if any. 
+
+```{r retention_schema}
+retention_schema <- list(
+    sheet = "Retention",
+    range = "A6:C41",
+    col_names = c("Population",
+                  "First-time Cohort",
+                  "Enrolled following fall term"),
+    col_types = c("text", "numeric", "numeric"),
+    na = c("", "NA", "N/A", "DS")
+)
+```
+
+### Momentum in First Year
+
+#### Within first term
+
+Within the term of entry, e.g., fall 2017
+
+#### Within first year
+
+For students entering fall 2017, includes summer 2017 (if enrolled), fall 2017, winter 2017-18 (if offered), spring 2018, and summer 2018.
+
+#### Completed
+
+Passing or earning a credit that counts toward credit requirements for graduation, as a result of enrolling in a course at the institution.
+Students earning credits through placement or prior learning should be included in the Exempt category, not here.
+Remedial/developmental courses that do not contribute credit hours toward degree requirements should not be included.
+
+#### Exempt
+
+Students who do not need to take the course either because their program does not require it or as a result of placement into a higher level course, AP credit, dual credit earned while enrolled in high school, CLEP, IB, or other reasons (please note). 
+
+#### Credits
+
+Semester credit hours.
+Institutions using quarter hours should divide quarter hours by 1.5 to convert to semester hours.
+
+#### Gateway course
+
+First credit bearing college course that applies to a requirement for a certificate or degree.
+Credit for the course counts toward credit requirements for graduation.
+The course has no credit bearing prerequisites, although it may have remedial / developmental prerequisites.
+
+#### Gateway math course
+
+A gateway course that satisfies a mathematics competency or quantitative literacy/reasoning requirement for graduation.
+
+#### Gateway English course
+
+A gateway course that satisfies an English or similar requirement for graduation.
+
+#### Declared major/program
+
+Students admitted directly to a program, or students who complete any paperwork required by the institution to declare a major or program.
+
+```{r momentum_schema}
+momentum_schema <- list(
+    sheet = "Momentum in First Year",
+    range = "A6:J41",
+    col_names = c("Population",
+                  "First-time cohort \n(Fall 2021)",
+                  "Completed credit hours within first term \n(15+ if entered full-time, 9+ if entered part-time)",
+                  "Completed credit hours within first year \n(30+ if entered full-time, 15+ if entered part-time)",
+                  "Completed gateway math course within first year",
+                  "Exempt from gateway math course",
+                  "Completed gateway English course within first year",
+                  "Exempt from gateway English course",
+                  "Completed or exempt from gateway math AND completed or exempt from gateway English AND completed credit hours within first year (30+ if entered full-time, 15+ if entered part-time)",
+                  "Declared a major/program within first year" ),
+    col_types = c("text", rep("numeric", 9)),
+    na = c("NA", "N/A", "DS")
+)
+```
+
+### Math Pathways
+
+#### Exempt
+
+See above.
+
+#### College Algebra
+
+A gateway math course that provides the algebra skills required for calculus.
+
+#### Quantitative Reasoning
+
+A gateway math course that emphasizes mathematical reasoning and its practical application through solving quantitative problems in a wide array of everyday life situations and making and evaluating logical arguments supported by quantitative evidence.
+
+#### Statistics
+
+A gateway math course including descriptive statistics, elementary probability, general and sampling distributions, and the fundamentals of statistical inference, including confidence intervals and hypothesis testing, simple regression, and correlation.
+
+#### Technical Math
+
+(If you have a course of this type, please provide a definition.)
+
+#### Other
+
+(For example, math for elementary education majors.
+Insert additional columns as needed and explain in the notes.)
+
+#### More than one gateway math course
+
+This column is provided to allow the sum of students by math pathways to equal the total who completed a math gateway course that is reported in Momentum in First Year.
+
+```{r math_pathways_schema}
+math_pathways_schema <- list(
+    sheet = "Math Pathways",
+    range = "A8:I11",
+    col_names = c("Population",
+                  "First-time cohort \n(Fall 2021)",
+                  "Exempt",
+                  "College Algebra",
+                  "Quantitative Reasoning",
+                  "Statistics",
+                  "Technical Math",
+                  "Other Course (total)",
+                  "More than one gateway math course"
+    ),
+    col_types = c("text", rep("numeric", 8)),
+    na = c("NA", "N/A", "DS")
+)
+
+
+math_pathways_offered_schema <- list(
+    sheet = "Math Pathways",
+    range = "C7:I7",
+    col_names = c("Exempt",
+                  "College Algebra",
+                  "Quantitative Reasoning",
+                  "Statistics",
+                  "Technical Math",
+                  "Other Course (total)",
+                  "More than one gateway math course"
+    ),
+    col_types = "text",
+    na = c("NA", "N/A", "DS")
+)
+```
+
+### Graduation
+
+#### Graduation
+
+Number of students in the cohort who earn the degree/certificate within 100% and 150% of the expected (full-time) degree/certificate length.
+Note that the count for 150% is cumulative, that is, it includes students completing in 100% time.
+
+### Graduates' Time and Credits	
+
+#### Average credits to degree
+
+Start with the degrees/certificates awarded in a specified year and determine the total number of semester credit hours each student completed since first enrolling.
+Include first-time degree/certificate-seeking undergraduates entering in any term; exclude students entering as transfer students.
+Average the number of semester credit hours across students and report by degree type.
+
+#### Average time to degree
+
+Start with the degrees/certificates awarded in a specified year and determine the total number of years and months elapsed from the first date of entry to the date of completion.
+Partial years should be expressed as a decimal.
+Include first-time degree/certificate-seeking undergraduates entering in any term; exclude students entering as transfer students.
+Average the number of years across students and report by degree type.
+
+```{r short_graduation_schema}
+short_graduation_schema <- list(
+    sheet = "Graduation - Programs < 4 years",
+    range = "A8:G43",
+    col_names = c(
+        "Enrollment Status",
+        "Population",
+        "First-time cohort",
+        t(outer(
+            glue::glue("Earned degree/certificate within {c(10,15)}0% time"),
+            glue::glue("Degree/certificates of {c('less than', 'at least')} 2 years",
+                       "{c('', ' but less than 4 years')}"),
+            paste, sep = "\n"))
+    ),
+    col_types = c(rep("text", 2),
+                  rep("numeric", 5)),
+    na = c("NA", "N/A", "DS")
+)
+```
+
+```{r bachelors_graduation_schema}
+bachelors_graduation_schema <- list(
+    sheet = "Graduation - Bachelors degrees",
+    range = "B6:E41",
+    col_names = c("Population",
+                  "First-time cohort",
+                  glue::glue(
+                      "Earned degree/certificate within {c(10,15)}0% time"
+                  )),
+    col_types = c("text", rep("numeric", 5)),
+    na = c("NA", "N/A", "DS")
+)
+```
+
+```{r graduation_time_schema}
+graduation_time_schema <- list(
+    sheet = "Graduates Time and Credits",
+    range = "A6:E149",
+    col_names = c("Enrollment Status",
+                  "Population",
+                  "Degree/certificate recipients (July 1, 2021 - June 30, 2022)",
+                  "Average credits to degree",
+                  "Average time to degree"),
+    col_types = c(rep("text", 2),
+                  rep("numeric", 3)),
+    na = c("NA", "N/A", "DS")
+)
+```
