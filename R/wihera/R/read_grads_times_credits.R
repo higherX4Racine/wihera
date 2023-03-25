@@ -21,21 +21,7 @@ read_grads_times_credits <- function(.file_name) {
             na = c("", "NA", "N/A", "DS")
         ) %>%
         dplyr::mutate(
-            `Degree Type` = fill_down_when_blank(.data$`Degree Type`),
-            `Enrollment Status` =
-                enrollment_status_from_population(.data$Population)
+            `Degree Type` = fill_down_when_blank(.data$`Degree Type`)
         ) %>%
-        dplyr::filter(
-            !detect_enrollment_status_in_population(.data$Population)
-        ) %>%
-        tidyr::separate(
-            col = "Population",
-            into = c("Factor", "Level"),
-            sep = ": ",
-            fill = "right"
-        ) %>%
-        dplyr::relocate(
-            "Enrollment Status",
-            .after = "Degree Type"
-        )
+        wrangle_population_and_enrollment_status()
 }

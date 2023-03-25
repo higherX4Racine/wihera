@@ -20,14 +20,9 @@ read_bachelors_graduation <- function(.file_name) {
             na = c("", "NA", "N/A", "DS"),
             .name_repair = "minimal"
         ) %>%
-        tidyr::separate(
-            col = "Population",
-            into = c("Factor", "Level"),
-            sep = ": ",
-            fill = "right"
-        ) %>%
+        wrangle_population_and_enrollment_status() %>%
         tidyr::pivot_longer(
-            cols = !(1:2),
+            cols = !(1:3),
             names_to = c("Completion Time"),
             values_to = "Count"
         )

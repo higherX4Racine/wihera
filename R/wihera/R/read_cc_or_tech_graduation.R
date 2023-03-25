@@ -10,9 +10,8 @@ read_cc_or_tech_graduation <- function(.file_name) {
         readxl::read_xlsx(
             path = .,
             sheet = "Graduation - Programs < 4 years",
-            range = "A8:G43",
+            range = "B8:G43",
             col_names = c(
-                "Enrollment Status",
                 "Population",
                 "First-time cohort",
                 t(outer(
@@ -20,20 +19,11 @@ read_cc_or_tech_graduation <- function(.file_name) {
                     glue::glue("{c('0y-2y', '2y-4y')}"),
                     paste, sep = "\n"))
             ),
-            col_types = c(rep("text", 2),
+            col_types = c("text",
                           rep("numeric", 5)),
             na = c("", "NA", "N/A", "DS")
         ) %>%
-        dplyr::mutate(
-            `Enrollment Status` =
-                fill_down_when_blank(.data$`Enrollment Status`)
-        ) %>%
-        tidyr::separate(
-            col = "Population",
-            into = c("Factor", "Level"),
-            sep = ": ",
-            fill = "right"
-        ) %>%
+        wrangle_population_and_enrollment_status() %>%
         tidyr::pivot_longer(
             cols = !(1:6),
             names_to = c("Completion Time",
