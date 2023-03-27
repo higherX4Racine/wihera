@@ -65,38 +65,6 @@ purrr::iwalk(
 )
 ```
 
-```{r math_pathways_schema}
-math_pathways_schema <- list(
-    sheet = "Math Pathways",
-    range = "A8:I11",
-    col_names = c("Population",
-                  "First-time cohort \n(Fall 2021)",
-                  "Exempt",
-                  "College Algebra",
-                  "Quantitative Reasoning",
-                  "Statistics",
-                  "Technical Math",
-                  "Other Course (total)",
-                  "More than one gateway math course"
-    ),
-    col_types = c("text", rep("numeric", 8)),
-    na = c("NA", "N/A", "DS")
-)
-
-
-math_pathways_offered_schema <- list(
-    sheet = "Math Pathways",
-    range = "C7:I7",
-    col_names = c("Exempt",
-                  "College Algebra",
-                  "Quantitative Reasoning",
-                  "Statistics",
-                  "Technical Math",
-                  "Other Course (total)",
-                  "More than one gateway math course"
-    ),
-    col_types = "text",
-    na = c("NA", "N/A", "DS")
-)
-```
-
+Note that the main source of mismatches is the type of line-ending character.
+To be clear, I created the "Example" file using Excel's "Save As..." command.
+Microsoft is **THE WORST!**
