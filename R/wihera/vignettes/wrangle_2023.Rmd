@@ -1,7 +1,11 @@
 ---
 title: "Wrangle Spring 2023 Data"
-output: rmarkdown::html_vignette
-vignette: >
+output:
+  rmarkdown::html_vignette:
+    css:
+      - !expr diffobj::diffobj_css()
+      - !expr system.file("rmarkdown", "templates", "html_vignette", "resources", "vignette.css", package = "rmarkdown")
+---vignette: >
   %\VignetteIndexEntry{Wrangle Spring 2023 Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
@@ -16,59 +20,23 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(magrittr)
 library(wihera)
+TEMPLATE_FILE <- system.file("extdata",
+                             "2023 HERA Data Submission form.xlsx",
+                             package = "wihera")
 
-HERA_PATH_2023 <- Sys.getenv("DATA_PATH") %>%
-    file.path(
-        "Downloads",
-        "HERA",
-        "Data Spring 2023"
-    )
+WI_STATE_FILE <- system.file("extdata",
+                             "2023 WI State U A&M HERA Data Submission form.xlsx",
+                             package = "wihera")
 
 ```
 
 Here are the data files that I will use.
 
 ```{r import_the_data}
-HERA_FILES <- dir(HERA_PATH_2023,
-                  pattern = "xlsx")
+template_sheets <- read_template(TEMPLATE_FILE)
 
-SCHOOL_INFO <- tibble::tribble(
-    ~ School,                            ~ Search,
-    "Cardinal Stritch University",       "Stritch",
-    "Carroll University",                "Carroll",
-    "Carthage College",                  "Carthage",
-    "Concordia University",              "Concordia",
-    "Gateway Technical College",         "Gateway",
-    "Marquette University",              "Marquette",
-    "Milwaukee School of Engineering",   "MSOE",
-    "Mt Mary College",                   "Mary",
-    "UW-Parkside",                       "Parkside",
-    "UW-Whitewater",                     "Whitewater",
-    "Waukesha County Technical College", "WCTC",
-    "WI Lutheran College",               "Lutheran" 
-) %>%
-    dplyr::mutate(
-        File = purrr::map_chr(glue::glue("^(?!~).*{.data$Search}"),
-                              ~ stringr::str_subset(HERA_FILES,
-                                                    .))
-    )
-
-template_sheets <- read_template(
-    file.path(HERA_PATH_2023,
-              "2023 HERA Data Submission form.xlsx")
-)
-
-school_templates <- SCHOOL_INFO$File %>%
-    expand_and_name_files(
-        HERA_PATH_2023,
-        SCHOOL_INFO$School
-    ) %>%
-    purrr::map(
-        read_template
-    ) %>%
-    purrr::transpose()
+wi_state_sheets <- read_template(WI_STATE_FILE)
 ```
 
 ## Things Tableau Didn't Catch:
@@ -83,20 +51,33 @@ If the schools changed the order of any of the column or row labels then there w
 The following code checks each submission against the template to catch mismatches.
 
 ```{r template_checking, results="asis"}
-sheet_checks <- TEMPLATE_REGIONS %>%
-    purrr::imap( ~ check_sheet(school_templates[[.y]],
-                               .x,
-                               template_sheets[[.y]])
+sheet_checks <- TEMPLATE_REGIONS$`2023` |>
+    purrr::imap( ~ check_school(wi_state_sheets[[.y]],
+                                .x,
+                                template_sheets[[.y]])
     )
 
-purrr::iwalk(sheet_checks,
-             function(.check, .sheet) {
-                 cat("####", .sheet)
-                 .check %>%
-                     dplyr::select(!"messages") %>%
-                     knitr::kable() %>%
-                     print()
-             }
+purrr::iwalk(
+    sheet_checks,
+    function(.check, .sheet) {
+        cat("\n\n#### ", .sheet, "\n\n", sep = "")
+        purrr::walk(
+            .check$messages,
+            function(m){
+                purrr::iwalk(m,
+                             function(.x, .y){
+                                 cat(
+                                     glue::glue(
+                                         "\n\n##### {.y}: {length(.x)} mismatch",
+                                         "{ifelse(length(.x) != 1, 'es', '')}\n\n"
+                                     )
+                                 )
+                                 cat("```r\n")
+                                 print(.x)
+                                 cat("\n```\n")
+                             })
+            })
+    }
 )
 ```
 

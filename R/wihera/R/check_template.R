@@ -8,5 +8,7 @@
 #' @export
 check_template <- function(.dims, .template, .submission) {
     waldo::compare(.template[.dims$rows, .dims$cols],
-                   .submission[.dims$rows, .dims$cols])
+                   .submission[.dims$rows, .dims$cols],
+                   x_arg = "template",
+                   y_arg = "submission")
 }
