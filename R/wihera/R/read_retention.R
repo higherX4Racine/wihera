@@ -5,9 +5,9 @@
 #' @returns A tibble with five fields:
 #'
 #' * `Enrollment Status` _character_ - Either Full- or Part-time.
-#' * `Factor` _character_ - What type of demographic group this row describes.
-#' * `Level` _character_ - The specific demographic group that this row describes.
-#' * `First-time cohort` _integer_ - The number of students in this group in their first fall.
+#' * `Demographic Group` _character_ - What type of demographic group this row describes.
+#' * `Detail` _character_ - The specific demographic group that this row describes.
+#' * `Cohort` _integer_ - The number of students in this group in their first fall.
 #' * `Count` _integer_ - The number of students in the group who returned the following fall.
 #'
 #' @export
@@ -19,7 +19,7 @@ read_retention <- function(.file_name) {
             range = "A6:C41",
             col_names = c(
                 "Population",
-                "First-time cohort",
+                "Cohort",
                 "Count"
             ),
             col_types = c("text", "numeric", "numeric"),

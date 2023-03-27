@@ -26,9 +26,9 @@ knitr::opts_chunk$set(
 
 ```
 
-Here are the data files that I will use.
+The first step is to read in the template and the example file as all-text matrices.
 
-```{r import_the_data}
+```{r import_the_templates}
 template_sheets <- wihera::read_template(.TEMPLATE_FILE)
 
 wi_state_sheets <- wihera::read_template(.WI_STATE_FILE)
@@ -68,3 +68,20 @@ purrr::iwalk(
 Note that the main source of mismatches is the type of line-ending character.
 To be clear, I created the "Example" file using Excel's "Save As..." command.
 Microsoft is **THE WORST!**
+
+## Import the Data
+
+The next step is to use each of the sheet-specific import functions to read the data.
+
+```{r import_the_data}
+example_data <- list(
+    "Graduates Time and Credits" = wihera::read_grads_times_credits,
+    "Graduation - Bachelors degrees" = wihera::read_graduation_bachelors,
+    "Graduation - Programs < 4 years" = wihera::read_graduation_cc_or_tech,
+    "Math Pathways" = wihera::read_math_pathways,
+    "Momentum in First Year" = wihera::read_momentum,
+    "Retention" = wihera::read_retention
+) |>
+    purrr::map(~ .(.WI_STATE_FILE))
+
+```

@@ -5,10 +5,10 @@
 #' @returns A tibble with seven fields:
 #'
 #' * `Enrollment Status` _character_ - Either Full- or Part-time.
-#' * `Factor` _character_ - What type of demographic group this row describes.
-#' * `Level` _character_ - The specific demographic group that this row describes.
+#' * `Demographic Group` _character_ - What type of demographic group this row describes.
+#' * `Detail` _character_ - The specific demographic group that this row describes.
 #' * `Pathway` _character_ - The specific mathematics coursework that the students did.
-#' * `First-time cohort` _integer_ - The number of students in this group in their first fall.
+#' * `Cohort` _integer_ - The number of students in this group in their first fall.
 #' * `Count` _integer_ - The number of students in the group who earned a credential.
 #' * `Offered` _character_ - Whether or not that pathway was available for students.
 #' @export
@@ -19,7 +19,7 @@ read_math_pathways <- function(.file_name) {
             sheet = "Math Pathways",
             range = "A8:I11",
             col_names = c("Population",
-                          "First-time cohort",
+                          "Cohort",
                           "Exempt",
                           "College Algebra",
                           "Quantitative Reasoning",
@@ -38,7 +38,7 @@ read_math_pathways <- function(.file_name) {
             values_to = "Count"
         ) |>
         dplyr::relocate(
-            "First-time cohort",
+            "Cohort",
             .before = "Count"
         ) |>
         dplyr::left_join(

@@ -12,12 +12,12 @@ read_graduation_cc_or_tech(.file_name)
 \value{
 A tibble with seven fields:
 \itemize{
-\item \verb{Enrollment Status} \emph{character} - Either Full- or Part-time.
-\item \code{Factor} \emph{character} - What type of demographic group this row describes.
-\item \code{Level} \emph{character} - The specific demographic group that this row describes.
+\item \verb{Enrollment at entry} \emph{character} - Either Full- or Part-time.
+\item \verb{Demographic Group} \emph{character} - What type of demographic group this row describes.
+\item \code{Detail} \emph{character} - The specific demographic group that this row describes.
 \item \verb{Completion Time} \emph{character} - Either 100\% or 150\%, which is relative to \verb{Program Length}.
 \item \verb{Program Length} \emph{character} - Either "0y-2y" or "2y-4y".
-\item \verb{First-time cohort} \emph{integer} - The number of students in this group in their first fall.
+\item \code{Cohort} \emph{integer} - The number of students in this group in their first fall.
 \item \code{Count} \emph{integer} - The number of students in the group who earned a credential.
 }
 }

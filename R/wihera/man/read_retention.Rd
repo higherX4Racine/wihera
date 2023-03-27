@@ -13,9 +13,9 @@ read_retention(.file_name)
 A tibble with five fields:
 \itemize{
 \item \verb{Enrollment Status} \emph{character} - Either Full- or Part-time.
-\item \code{Factor} \emph{character} - What type of demographic group this row describes.
-\item \code{Level} \emph{character} - The specific demographic group that this row describes.
-\item \verb{First-time cohort} \emph{integer} - The number of students in this group in their first fall.
+\item \verb{Demographic Group} \emph{character} - What type of demographic group this row describes.
+\item \code{Detail} \emph{character} - The specific demographic group that this row describes.
+\item \code{Cohort} \emph{integer} - The number of students in this group in their first fall.
 \item \code{Count} \emph{integer} - The number of students in the group who returned the following fall.
 }
 }

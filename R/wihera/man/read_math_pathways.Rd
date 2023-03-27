@@ -13,10 +13,10 @@ read_math_pathways(.file_name)
 A tibble with seven fields:
 \itemize{
 \item \verb{Enrollment Status} \emph{character} - Either Full- or Part-time.
-\item \code{Factor} \emph{character} - What type of demographic group this row describes.
-\item \code{Level} \emph{character} - The specific demographic group that this row describes.
+\item \verb{Demographic Group} \emph{character} - What type of demographic group this row describes.
+\item \code{Detail} \emph{character} - The specific demographic group that this row describes.
 \item \code{Pathway} \emph{character} - The specific mathematics coursework that the students did.
-\item \verb{First-time cohort} \emph{integer} - The number of students in this group in their first fall.
+\item \code{Cohort} \emph{integer} - The number of students in this group in their first fall.
 \item \code{Count} \emph{integer} - The number of students in the group who earned a credential.
 \item \code{Offered} \emph{character} - Whether or not that pathway was available for students.
 }

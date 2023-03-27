@@ -4,12 +4,12 @@
 #'
 #' @returns A tibble with seven fields:
 #'
-#' * `Enrollment Status` _character_ - Either Full- or Part-time.
-#' * `Factor` _character_ - What type of demographic group this row describes.
-#' * `Level` _character_ - The specific demographic group that this row describes.
+#' * `Enrollment at entry` _character_ - Either Full- or Part-time.
+#' * `Demographic Group` _character_ - What type of demographic group this row describes.
+#' * `Detail` _character_ - The specific demographic group that this row describes.
 #' * `Completion Time` _character_ - Either 100% or 150%, which is relative to `Program Length`.
 #' * `Program Length` _character_ - Either "0y-2y" or "2y-4y".
-#' * `First-time cohort` _integer_ - The number of students in this group in their first fall.
+#' * `Cohort` _integer_ - The number of students in this group in their first fall.
 #' * `Count` _integer_ - The number of students in the group who earned a credential.
 #'
 #' @export
@@ -21,7 +21,7 @@ read_graduation_cc_or_tech <- function(.file_name) {
             range = "B8:G43",
             col_names = c(
                 "Population",
-                "First-time cohort",
+                "Cohort",
                 t(outer(
                     glue::glue("{c(10,15)}0%"),
                     glue::glue("{c('0y-2y', '2y-4y')}"),
@@ -40,7 +40,7 @@ read_graduation_cc_or_tech <- function(.file_name) {
             values_to = "Count"
         ) |>
         dplyr::relocate(
-            "First-time cohort",
+            "Cohort",
             .before = "Count"
         )
 }

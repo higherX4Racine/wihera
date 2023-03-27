@@ -5,11 +5,11 @@
 #' @returns A tibble with seven fields:
 #'
 #' * `Enrollment Status` _character_ - Either Full- or Part-time.
-#' * `Factor` _character_ - What type of demographic group this row describes.
-#' * `Level` _character_ - The specific demographic group that this row describes.
+#' * `Demographic Group` _character_ - What type of demographic group this row describes.
+#' * `Detail` _character_ - The specific demographic group that this row describes.
 #' * `Milestone` _character_ - A specific first-year goal, such as completing a minimum number of credits.
 #' * `Method` _character_ - Whether the student reached the milestone by completing it or through exemption.
-#' * `First-time cohort` _integer_ - The number of students in this group in their first fall.
+#' * `Cohort` _integer_ - The number of students in this group in their first fall.
 #' * `Count` _integer_ - The number of students in the group who achieved the milestone.
 #'
 #' @export
@@ -20,7 +20,7 @@ read_momentum <- function(.file_name) {
             sheet = "Momentum in First Year",
             range = "A6:J41",
             col_names = c("Population",
-                          "First-time cohort",
+                          "Cohort",
                           "First Term Credits",
                           "First Year Credits",
                           "Gateway Math,Completed",
@@ -50,7 +50,7 @@ read_momentum <- function(.file_name) {
             replace = list(Method = "Completed")
         ) |>
         dplyr::relocate(
-            "First-time cohort",
+            "Cohort",
             .before = "Count"
         )
 }

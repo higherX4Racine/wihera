@@ -5,9 +5,9 @@
 #' @returns
 #' A data with `Population` removed, and two extra columns:
 #'
-#' * `Enrollment Status` _character_ -  whether the students were full- or part-time.
-#' * `Factor` _character_ - Which kind of population the next variable denotes
-#' * `Level` _character_ - a specific kind of population, like a race or economic group
+#' * `Enrollment at entry` _character_ -  whether the students were full- or part-time.
+#' * `Demographic Group` _character_ - Which kind of population the next variable denotes
+#' * `Detail` _character_ - a specific kind of population, like a race or economic group
 #'
 #' @importFrom rlang .data
 #'
@@ -15,14 +15,14 @@
 wrangle_population_and_enrollment_status <- function(.x){
     .x |>
         dplyr::mutate(
-            `Enrollment Status` =
+            `Enrollment at entry` =
                 .data$Population |>
                 detect_enrollment_status_in_population() |>
                 dplyr::if_else(.data$Population, NA) |>
                 fill_down_when_blank()
         ) |>
         dplyr::relocate(
-            "Enrollment Status",
+            "Enrollment at entry",
             .before = "Population"
         ) |>
         dplyr::filter(
@@ -30,7 +30,7 @@ wrangle_population_and_enrollment_status <- function(.x){
         ) |>
         tidyr::separate(
             col = "Population",
-            into = c("Factor", "Level"),
+            into = c("Demographic Group", "Detail"),
             sep = ": ",
             fill = "right"
         )

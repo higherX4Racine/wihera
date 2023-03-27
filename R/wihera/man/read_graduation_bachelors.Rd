@@ -12,11 +12,11 @@ read_graduation_bachelors(.file_name)
 \value{
 A tibble with six fields:
 \itemize{
-\item \verb{Enrollment Status} \emph{character} - Either Full- or Part-time.
-\item \code{Factor} \emph{character} - What type of demographic group this row describes.
-\item \code{Level} \emph{character} - The specific demographic group that this row describes.
+\item \verb{Enrollment at entry} \emph{character} - Either Full- or Part-time.
+\item \verb{Demographic Group} \emph{character} - What type of demographic group this row describes.
+\item \code{Detail} \emph{character} - The specific demographic group that this row describes.
 \item \verb{Completion Time} \emph{character} - Either 100\% (4-year rate) or 150\% (6-year rate).
-\item \verb{First-time cohort} \emph{integer} - The number of students in this group in their first fall.
+\item \code{Cohort} \emph{integer} - The number of students in this group in their first fall.
 \item \code{Count} \emph{integer} - The number of students in the group who graduated with a bachelor's degree.
 }
 }

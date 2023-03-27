@@ -4,13 +4,13 @@
 #'
 #' @returns A tibble with seven fields:
 #'
-#' * `Degree Type` _character_ - e.g., Certificate, Associate's, or Bachelor's.
-#' * `Enrollment Status` _character_ - Either Full- or Part-time.
-#' * `Factor` _character_ - What type of demographic group this row describes.
-#' * `Level` _character_ - The specific demographic group that this row describes.
+#' * `Degree/Certificate` _character_ - e.g., Certificate, Associate's, or Bachelor's.
+#' * `Enrollment at entry` _character_ - Either Full- or Part-time.
+#' * `Demographic Group` _character_ - What type of demographic group this row describes.
+#' * `Detail` _character_ - The specific demographic group that this row describes.
 #' * `Count` _integer_ - The number of students who were in the group.
-#' * `Credits` _numeric_ - The average number of credits earned by students in the group.
-#' * `Years` _numeric_ - The average number of years that students in this group took to graduate.
+#' * `Average credits to degree` _numeric_ - The average number of credits earned by students in the group.
+#' * `Average time to degree` _numeric_ - The average number of years that students in this group took to graduate.
 #'
 #' @importFrom rlang .data
 #'
@@ -21,17 +21,17 @@ read_grads_times_credits <- function(.file_name) {
         readxl::read_xlsx(
             sheet = "Graduates Time and Credits",
             range = "A6:E149",
-            col_names = c("Degree Type",
+            col_names = c("Degree/Certificate",
                           "Population",
                           "Count",
-                          "Credits",
-                          "Years"),
+                          "Average credits to degree",
+                          "Average time to degree"),
             col_types = c(rep("text", 2),
                           rep("numeric", 3)),
             na = c("", "NA", "N/A", "DS")
         ) |>
         dplyr::mutate(
-            `Degree Type` = fill_down_when_blank(.data$`Degree Type`)
+            `Degree/Certificate` = fill_down_when_blank(.data$`Degree/Certificate`)
         ) |>
         wrangle_population_and_enrollment_status()
 }
