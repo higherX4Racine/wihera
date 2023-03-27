@@ -15,6 +15,27 @@
 #' @source [College Scorecard](https://collegescorecard.ed.gov/data/)
 "HERA_SCHOOLS"
 
+#' Layout information for the data-entry template of 2023
+#'
+#' @format This list has the following layout: Sheet(Region(Rows, Columns)),
+#' and the following values:
+#'
+#' |Sheet                          |Region| Rows|Columns|
+#' |:------------------------------|:-----|----:|------:|
+#' |Retention                      |fields|  1:5|    1:3|
+#' |                               |labels| 6:41|    1:1|
+#' |Momentum in First Year         |fields| 1:5|    1:10|
+#' |                               |labels| 6:41|    1:1|
+#' |Math Pathways                  |fields|  1:6|    1:9|
+#' |                               |labels| 7:11|    1:1|
+#' |Graduation - Programs < 4 years|fields|  1:7|    1:7|
+#' |                               |labels| 8:43|    1:2|
+#' |Graduation - Bachelors degrees |fields|  1:5|    2:5|
+#' |                               |labels| 6:41|    2:2|
+#' |Graduates Time and Credits     |fields|  1:5|    1:5|
+#' |                               |labels|6:149|    1:2|
+"TEMPLATE_REGIONS_2023"
+
 #' A tibble of data from the last sheet of an example spreadsheet from 2023
 #'
 #' The last sheet in the 2023 template worksheet is an aggregate long table

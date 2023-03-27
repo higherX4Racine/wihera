@@ -1,10 +1,13 @@
 Package: wihera
-Title: What the Package Does (One Line, Title Case)
+Title: Wrangle and Summarize Data from HERA Schools
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Benjamin", "Taft", , "ben.taft@career2cradle.org", role = c("aut", "cre"))
+Description: The Higher Education Regional Alliance (www.herawisconsin.org) is a
+    coalition of schools in southeastern Wisconsin. Each school submits annual
+    data dumps to Higher Expectations for Racine County (www.higherexpectationsracinecounty.org),
+    which is responsible for validating, collating, and reporting the data.
+    These reports generally take the form of web dashboards or printed handouts.
 License: MIT + file LICENSE
 Suggests: 
     knitr,
@@ -18,3 +21,15 @@ VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
 LazyData: true
+Imports: 
+    cli,
+    dplyr,
+    glue,
+    purrr,
+    readxl,
+    rlang,
+    stringr,
+    tibble,
+    tidyr,
+    tidyselect,
+    waldo

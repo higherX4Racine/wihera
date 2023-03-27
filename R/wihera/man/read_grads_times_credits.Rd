@@ -9,6 +9,18 @@ read_grads_times_credits(.file_name)
 \arguments{
 \item{.file_name}{the full path to the spreadsheet with data}
 }
+\value{
+A tibble with seven fields:
+\itemize{
+\item \verb{Degree Type} \emph{character} - e.g., Certificate, Associate's, or Bachelor's.
+\item \verb{Enrollment Status} \emph{character} - Either Full- or Part-time.
+\item \code{Factor} \emph{character} - What type of demographic group this row describes.
+\item \code{Level} \emph{character} - The specific demographic group that this row describes.
+\item \code{Count} \emph{integer} - The number of students who were in the group.
+\item \code{Credits} \emph{numeric} - The average number of credits earned by students in the group.
+\item \code{Years} \emph{numeric} - The average number of years that students in this group took to graduate.
+}
+}
 \description{
 Import data on graduation times and credits earned across populations.
 }

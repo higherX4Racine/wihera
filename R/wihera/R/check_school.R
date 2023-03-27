@@ -9,9 +9,10 @@
 #'
 #' * For each name in `.regions`, a count of the number of mismatches.
 #' * **messages** a named character vector of mismatch details
+#'
 #' @export
 check_school <- function(.school, .regions, .template){
-    comparisons <- .regions %>%
+    comparisons <- .regions |>
         purrr::map(check_template, .template, .school)
     result <- lapply(comparisons, length)
     result$messages <- list(comparisons)

@@ -4,11 +4,10 @@
 #'
 #' @return a list of all-character tibbles named from sheet names
 #' @export
-#' @importFrom magrittr `%>%`
 read_template <- function(path_to_file){
-    path_to_file %>%
-        readxl::excel_sheets() %>%
-        rlang::set_names() %>%
+    path_to_file |>
+        readxl::excel_sheets() |>
+        rlang::set_names() |>
         purrr::map(
             ~ readxl::read_xlsx(path = path_to_file,
                                 sheet = .,

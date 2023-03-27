@@ -11,18 +11,18 @@
 #' * A count of the number of mismatches for each element of `.regions`
 #' * **messages** a list of the mismatches
 #'
-#' @importFrom magrittr `%>%`
+#' @importFrom rlang .data
 #' @export
 check_sheet <- function(.schools, .regions, .template){
-    .schools %>%
+    .schools |>
         purrr::map(
             check_school,
             .regions = .regions,
             .template = .template
-        ) %>%
+        ) |>
         purrr::list_rbind(
             names_to = "School"
-        ) %>%
+        ) |>
         dplyr::arrange(
             .data$School
         )

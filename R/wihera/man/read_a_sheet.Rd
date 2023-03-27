@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_a_sheet.R
 \name{read_a_sheet}
 \alias{read_a_sheet}
-\title{Title}
+\title{Apply an importing function to one sheet from each of several spreadsheets}
 \usage{
 read_a_sheet(.files, .path, .schools, .function)
 }
@@ -19,5 +19,5 @@ read_a_sheet(.files, .path, .schools, .function)
 a tibble with outputs from
 }
 \description{
-Title
+Apply an importing function to one sheet from each of several spreadsheets
 }

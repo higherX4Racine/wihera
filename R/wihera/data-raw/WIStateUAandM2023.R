@@ -2,7 +2,7 @@
 
 WIStateUAandM2023 <- readxl::read_xlsx(
     path = system.file("extdata",
-                       "2023 WI State U A&M HERA Data Submission form.xlsx",
+                       "2023_Example_HERA_Data_Submission_form.xlsx",
                        package = "wihera"),
     sheet = "Data Cleaning (DO NOT USE)",
     col_names = TRUE,

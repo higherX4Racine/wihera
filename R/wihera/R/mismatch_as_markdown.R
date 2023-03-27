@@ -8,7 +8,7 @@
 #' @export
 mismatch_as_markdown <- function(.waldo_compare, .label, .heading){
     if (length(.waldo_compare)) {
-        .e <- paste0(tail(.waldo_compare, -1), "\n")
+        .e <- paste0(utils::tail(.waldo_compare, -1), "\n")
         cat(
             glue::glue(
                 "\n\n{.heading} {.label}: {length(.e)} mismatch",

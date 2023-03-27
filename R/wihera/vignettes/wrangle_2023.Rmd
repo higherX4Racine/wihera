@@ -1,10 +1,7 @@
 ---
 title: "Wrangle Spring 2023 Data"
 output:
-  rmarkdown::html_vignette:
-    css:
-      - !expr diffobj::diffobj_css()
-      - !expr system.file("rmarkdown", "templates", "html_vignette", "resources", "vignette.css", package = "rmarkdown")
+  rmarkdown::html_vignette
 ---vignette: >
   %\VignetteIndexEntry{Wrangle Spring 2023 Data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,19 +11,17 @@ output:
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  cache = TRUE
+  comment = "#>"
 )
 ```
 
 ```{r setup}
-library(wihera)
 .TEMPLATE_FILE <- system.file("extdata",
-                              "2023 HERA Data Submission form.xlsx",
+                              "2023_HERA_Data_Submission_form.xlsx",
                               package = "wihera")
 
 .WI_STATE_FILE <- system.file("extdata",
-                              "2023 WI State U A&M HERA Data Submission form.xlsx",
+                              "2023_Example_HERA_Data_Submission_form.xlsx",
                               package = "wihera")
 
 ```
@@ -34,9 +29,9 @@ library(wihera)
 Here are the data files that I will use.
 
 ```{r import_the_data}
-template_sheets <- read_template(.TEMPLATE_FILE)
+template_sheets <- wihera::read_template(.TEMPLATE_FILE)
 
-wi_state_sheets <- read_template(.WI_STATE_FILE)
+wi_state_sheets <- wihera::read_template(.WI_STATE_FILE)
 ```
 
 ## Things Tableau Didn't Catch:
@@ -51,10 +46,10 @@ If the schools changed the order of any of the column or row labels then there w
 The following code checks each submission against the template to catch mismatches.
 
 ```{r template_checking, results="asis"}
-sheet_checks <- TEMPLATE_REGIONS$`2023` |>
-    purrr::imap( ~ check_school(wi_state_sheets[[.y]],
-                                .x,
-                                template_sheets[[.y]])
+sheet_checks <- wihera::TEMPLATE_REGIONS_2023 |>
+    purrr::imap( ~ wihera::check_school(wi_state_sheets[[.y]],
+                                        .x,
+                                        template_sheets[[.y]])
     )
 
 purrr::iwalk(
@@ -62,223 +57,13 @@ purrr::iwalk(
     function(.check, .sheet) {
         cat("\n\n#### ", .sheet, "\n\n", sep = "")
         purrr::walk(.check$messages,
-                    ~ purrr::iwalk(., mismatch_as_markdown, "#####"))
+                    purrr::iwalk,
+                    wihera::mismatch_as_markdown,
+                    "#####")
+        cat("\n")
     }
 )
 ```
-
-## Definitions from the Template
-
-These definitions are intended as guidance for completing the template.
-If alternative definitions or measures are more appropriate for your institution, please meet the intent as best you can and include notes of differences.
-
-### Populations
-
-Population definitions are intended to align with IPEDS where applicable.
-
-#### First-time cohort
-
-First-time degree/certificate-seeking undergraduates entering the fall term.
-Students should have no previous college credits other than credits earned while enrolled in high school.
-Students admitted for fall who begin enrollment in the summer also may be included.
-If the first time cohort is less than 10, suppress the data.
-
-#### Full-time
-
-Enrolled for 12 or more semester credits (or 12 or more quarter credits or 24 or more contact hours a week) at the beginning of the term.
-
-#### Part-time
-
-Enrolled for less than 12 semester credits (or less than 12 quarter credits or less than 24 contact hours a week) at the beginning of the term.
-
-```{r enrollment_status_factor}
-ENROLLMENT_STATUS_LEVELS <- c(
-    "Full-time",
-    "Part-time"
-)
-```
-
-#### Race/ethnicity
-
-As reported to IPEDS
-
-```{r race_factor}
-RACE_LEVELS <- c(
-    "Hispanic",
-    "Black, non-Hispanic",
-    "White, non-Hispanic",
-    "Asian",
-    "Native Hawaiian or other Pacific Islander",
-    "American Indian/Alaska Native",
-    "Two or More Races",
-    "Unknown",
-    "Non-resident Alien"
-)
-
-```
-
-#### Gender
-
-As reported to IPEDS
-
-```{r gender_levels}
-GENDER_LEVELS <- c(
-    "Male",
-    "Female"
-)
-```
-
-#### Age
-
-As of the beginning of the term of entry.
-Students under age 17 may be included in the Age: 17 to 19 category.
-
-```{r age_levels}
-AGE_LEVELS <- tibble::tribble(
-    ~ Level,           ~ `Lower Age`, ~ `Upper Age`,
-    "17-19 years old",            0L,           19L,
-    "20-24 years old",           20L,           24L,
-    "Age 25 and over",           25L,          999L,
-    "Unknown",                    NA,            NA
-)
-```
-
-#### Income
-
-Received Pell Grant in the term of entry.
-Eligibility for Pell Grant in the term of entry may be used as an alternative.
-
-### Degree/certificate programs
-
-Program definitions are intended to align with IPEDS where applicable.
-
-#### Degree/certificate program of less than 2 years
-
-As defined in IPEDS Graduation Rate Survey
-
-#### Degree/certificate program of at least 2 years but less than 4 years
-
-As defined in IPEDS Graduation Rate Survey
-
-#### Bachelor's degree
-
-Bachelor's or equivalent degree as defined in IPEDS Graduation Rate Survey
-
-## Measures
-
-Measures are intended to align with IPEDS where applicable.
-
-### Retention
-
-#### Retention
-
-Number of students in the cohort who enrolled at the beginning of the next fall term.
-Include students who graduated/completed their program within one year, if any. 
-
-```{r retention_schema}
-retention_schema <- list(
-    sheet = "Retention",
-    range = "A6:C41",
-    col_names = c("Population",
-                  "First-time Cohort",
-                  "Enrolled following fall term"),
-    col_types = c("text", "numeric", "numeric"),
-    na = c("", "NA", "N/A", "DS")
-)
-```
-
-### Momentum in First Year
-
-#### Within first term
-
-Within the term of entry, e.g., fall 2017
-
-#### Within first year
-
-For students entering fall 2017, includes summer 2017 (if enrolled), fall 2017, winter 2017-18 (if offered), spring 2018, and summer 2018.
-
-#### Completed
-
-Passing or earning a credit that counts toward credit requirements for graduation, as a result of enrolling in a course at the institution.
-Students earning credits through placement or prior learning should be included in the Exempt category, not here.
-Remedial/developmental courses that do not contribute credit hours toward degree requirements should not be included.
-
-#### Exempt
-
-Students who do not need to take the course either because their program does not require it or as a result of placement into a higher level course, AP credit, dual credit earned while enrolled in high school, CLEP, IB, or other reasons (please note). 
-
-#### Credits
-
-Semester credit hours.
-Institutions using quarter hours should divide quarter hours by 1.5 to convert to semester hours.
-
-#### Gateway course
-
-First credit bearing college course that applies to a requirement for a certificate or degree.
-Credit for the course counts toward credit requirements for graduation.
-The course has no credit bearing prerequisites, although it may have remedial / developmental prerequisites.
-
-#### Gateway math course
-
-A gateway course that satisfies a mathematics competency or quantitative literacy/reasoning requirement for graduation.
-
-#### Gateway English course
-
-A gateway course that satisfies an English or similar requirement for graduation.
-
-#### Declared major/program
-
-Students admitted directly to a program, or students who complete any paperwork required by the institution to declare a major or program.
-
-```{r momentum_schema}
-momentum_schema <- list(
-    sheet = "Momentum in First Year",
-    range = "A6:J41",
-    col_names = c("Population",
-                  "First-time cohort \n(Fall 2021)",
-                  "Completed credit hours within first term \n(15+ if entered full-time, 9+ if entered part-time)",
-                  "Completed credit hours within first year \n(30+ if entered full-time, 15+ if entered part-time)",
-                  "Completed gateway math course within first year",
-                  "Exempt from gateway math course",
-                  "Completed gateway English course within first year",
-                  "Exempt from gateway English course",
-                  "Completed or exempt from gateway math AND completed or exempt from gateway English AND completed credit hours within first year (30+ if entered full-time, 15+ if entered part-time)",
-                  "Declared a major/program within first year" ),
-    col_types = c("text", rep("numeric", 9)),
-    na = c("NA", "N/A", "DS")
-)
-```
-
-### Math Pathways
-
-#### Exempt
-
-See above.
-
-#### College Algebra
-
-A gateway math course that provides the algebra skills required for calculus.
-
-#### Quantitative Reasoning
-
-A gateway math course that emphasizes mathematical reasoning and its practical application through solving quantitative problems in a wide array of everyday life situations and making and evaluating logical arguments supported by quantitative evidence.
-
-#### Statistics
-
-A gateway math course including descriptive statistics, elementary probability, general and sampling distributions, and the fundamentals of statistical inference, including confidence intervals and hypothesis testing, simple regression, and correlation.
-
-#### Technical Math
-
-(If you have a course of this type, please provide a definition.)
-
-#### Other
-
-(For example, math for elementary education majors.
-Insert additional columns as needed and explain in the notes.)
-
-#### More than one gateway math course
-
-This column is provided to allow the sum of students by math pathways to equal the total who completed a math gateway course that is reported in Momentum in First Year.
 
 ```{r math_pathways_schema}
 math_pathways_schema <- list(
@@ -315,26 +100,3 @@ math_pathways_offered_schema <- list(
 )
 ```
 
-### Graduation
-
-#### Graduation
-
-Number of students in the cohort who earn the degree/certificate within 100% and 150% of the expected (full-time) degree/certificate length.
-Note that the count for 150% is cumulative, that is, it includes students completing in 100% time.
-
-### Graduates' Time and Credits	
-
-#### Average credits to degree
-
-Start with the degrees/certificates awarded in a specified year and determine the total number of semester credit hours each student completed since first enrolling.
-Include first-time degree/certificate-seeking undergraduates entering in any term; exclude students entering as transfer students.
-Average the number of semester credit hours across students and report by degree type.
-
-#### Average time to degree
-
-Start with the degrees/certificates awarded in a specified year and determine the total number of years and months elapsed from the first date of entry to the date of completion.
-Partial years should be expressed as a decimal.
-Include first-time degree/certificate-seeking undergraduates entering in any term; exclude students entering as transfer students.
-Average the number of years across students and report by degree type.
-
-```

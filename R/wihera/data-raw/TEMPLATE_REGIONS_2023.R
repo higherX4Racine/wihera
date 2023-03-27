@@ -1,6 +1,6 @@
 ## code to prepare `TEMPLATE_REGIONS` dataset goes here
 
-TEMPLATE_REGIONS <- list(
+TEMPLATE_REGIONS_2023 <- list(
     `Retention` = list(
         fields = list(rows = 1:5, cols = 1:3),
         labels = list(rows = 6:41, cols = 1)
@@ -27,4 +27,4 @@ TEMPLATE_REGIONS <- list(
     )
 )
 
-usethis::use_data(TEMPLATE_REGIONS, overwrite = TRUE)
+usethis::use_data(TEMPLATE_REGIONS_2023, overwrite = TRUE)

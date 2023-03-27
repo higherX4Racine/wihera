@@ -3,6 +3,9 @@
 #' @param .v a column of data with `NA`'s in empty cells
 #'
 #' @return a column of data with `NA`s replaced by values above them.
+#'
+#' @import purrr
+#'
 #' @export
 #'
 #' @examples

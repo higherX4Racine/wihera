@@ -12,9 +12,9 @@ wrangle_population_and_enrollment_status(.x)
 \value{
 A data with \code{Population} removed, and two extra columns:
 \itemize{
-\item \verb{Enrollment Status}: whether the students were full- or part-time.
-\item \code{Factor}: Which kind of population the next variable denotes
-\item \code{Level} : a specific kind of population, like a race or economic group
+\item \verb{Enrollment Status} \emph{character} -  whether the students were full- or part-time.
+\item \code{Factor} \emph{character} - Which kind of population the next variable denotes
+\item \code{Level} \emph{character} - a specific kind of population, like a race or economic group
 }
 }
 \description{
