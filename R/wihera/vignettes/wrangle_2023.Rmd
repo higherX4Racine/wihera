@@ -21,22 +21,22 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(wihera)
-TEMPLATE_FILE <- system.file("extdata",
-                             "2023 HERA Data Submission form.xlsx",
-                             package = "wihera")
+.TEMPLATE_FILE <- system.file("extdata",
+                              "2023 HERA Data Submission form.xlsx",
+                              package = "wihera")
 
-WI_STATE_FILE <- system.file("extdata",
-                             "2023 WI State U A&M HERA Data Submission form.xlsx",
-                             package = "wihera")
+.WI_STATE_FILE <- system.file("extdata",
+                              "2023 WI State U A&M HERA Data Submission form.xlsx",
+                              package = "wihera")
 
 ```
 
 Here are the data files that I will use.
 
 ```{r import_the_data}
-template_sheets <- read_template(TEMPLATE_FILE)
+template_sheets <- read_template(.TEMPLATE_FILE)
 
-wi_state_sheets <- read_template(WI_STATE_FILE)
+wi_state_sheets <- read_template(.WI_STATE_FILE)
 ```
 
 ## Things Tableau Didn't Catch:
@@ -61,22 +61,8 @@ purrr::iwalk(
     sheet_checks,
     function(.check, .sheet) {
         cat("\n\n#### ", .sheet, "\n\n", sep = "")
-        purrr::walk(
-            .check$messages,
-            function(m){
-                purrr::iwalk(m,
-                             function(.x, .y){
-                                 cat(
-                                     glue::glue(
-                                         "\n\n##### {.y}: {length(.x)} mismatch",
-                                         "{ifelse(length(.x) != 1, 'es', '')}\n\n"
-                                     )
-                                 )
-                                 cat("```r\n")
-                                 print(.x)
-                                 cat("\n```\n")
-                             })
-            })
+        purrr::walk(.check$messages,
+                    ~ purrr::iwalk(., mismatch_as_markdown, "#####"))
     }
 )
 ```
