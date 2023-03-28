@@ -8,12 +8,26 @@
 #'
 #' * `UNITID` _integer_ - College Scorecard code for one specific campus/location.
 #' * `OPEID6` _integer_ - A code for one IHD, which may have multiple campuses.
-#' * `Name` _string_ - The name of the Institution of Higher Education.
-#' * `Campus` _string_ - The name for the campus, optional
-#' * `Search` _string_ - A search term for finding files relevant to the school.
+#' * `Name` _character_ - The name of the Institution of Higher Education.
+#' * `Campus` _character_ - The name for the campus, optional
+#' * `Search` _character_ - A search term for finding files relevant to the school.
 #'
 #' @source [College Scorecard](https://collegescorecard.ed.gov/data/)
 "HERA_SCHOOLS"
+
+#' Standard labels for the different possible Math Pathways
+#'
+#' @format a character vector
+"MATH_PATHWAY_NAMES"
+
+#' Map from short names for momentum milestone statuses to their prolix HERA labels.
+#' @format a tibble with four columns:
+#'
+#' * `Order` _integer_ The order that the milestone status appears in the template sheet.
+#' * `Short Name` _character_ - A terse description of the milestone status
+#' * `Status` _character_ - Either "Completed" or "Exempt".
+#' * `Long Name` _character_ - The full name of the measure from the template sheet.
+"MOMENTUM_MILESTONES"
 
 #' Layout information for the data-entry template of 2023
 #'

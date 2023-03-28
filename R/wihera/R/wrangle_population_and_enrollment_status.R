@@ -19,7 +19,17 @@ wrangle_population_and_enrollment_status <- function(.x){
                 .data$Population |>
                 detect_enrollment_status_in_population() |>
                 dplyr::if_else(.data$Population, NA) |>
-                fill_down_when_blank()
+                fill_down_when_blank() |>
+                stringr::str_to_lower(),
+            `Enrollment at entry` = dplyr::case_when(
+                stringr::str_detect(.data$`Enrollment at entry`,
+                                    "full") ~
+                    "Full Time",
+                stringr::str_detect(.data$`Enrollment at entry`,
+                                    "part") ~
+                    "Part Time",
+                TRUE ~ NA
+            )
         ) |>
         dplyr::relocate(
             "Enrollment at entry",
@@ -33,5 +43,34 @@ wrangle_population_and_enrollment_status <- function(.x){
             into = c("Demographic Group", "Detail"),
             sep = ": ",
             fill = "right"
+        ) |>
+        dplyr::mutate(
+            `Demographic Group` = dplyr::case_match(
+                .data$`Demographic Group`,
+                "TOTAL Students" ~ "Total",
+                "Race" ~ "Race/Ethnicity",
+                .default = .data$`Demographic Group`
+            ),
+            Detail = dplyr::case_match(
+                .data$Detail |>
+                    stringr::str_extract("^(\\w+)") |>
+                    stringr::str_to_lower(),
+                NA ~ "All Students",
+                "hispanic" ~ "Hispanic/Latinx",
+                "black" ~ "Black, non-Hispanic",
+                "white" ~ "White, non-Hispanic",
+                "asian" ~ "Asian",
+                "native" ~ "Native Hawaiian or other Pacific Islander",
+                "american" ~ "American Indian/Alaska Native",
+                "two" ~ "Two or More Races",
+                "unknown" ~ "Unknown",
+                "non" ~ "Non-resident Alien",
+                "male" ~ "Male",
+                "female" ~ "Female",
+                "17" ~ "17-19 years old",
+                "20" ~ "20-24 years old",
+                "age" ~ "Age 25 and over",
+                "received" ~ "Received Pell Grant"
+            )
         )
 }

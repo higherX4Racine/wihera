@@ -12,11 +12,11 @@ read_momentum(.file_name)
 \value{
 A tibble with seven fields:
 \itemize{
-\item \verb{Enrollment Status} \emph{character} - Either Full- or Part-time.
+\item \verb{Enrollment at entry} \emph{character} - Either Full- or Part-time.
 \item \verb{Demographic Group} \emph{character} - What type of demographic group this row describes.
 \item \code{Detail} \emph{character} - The specific demographic group that this row describes.
 \item \code{Milestone} \emph{character} - A specific first-year goal, such as completing a minimum number of credits.
-\item \code{Method} \emph{character} - Whether the student reached the milestone by completing it or through exemption.
+\item \code{Status} \emph{character} - Whether the student reached the milestone by completing it or through exemption.
 \item \code{Cohort} \emph{integer} - The number of students in this group in their first fall.
 \item \code{Count} \emph{integer} - The number of students in the group who achieved the milestone.
 }

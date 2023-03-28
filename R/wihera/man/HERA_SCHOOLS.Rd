@@ -9,9 +9,9 @@ A tibble with 4 columns:
 \itemize{
 \item \code{UNITID} \emph{integer} - College Scorecard code for one specific campus/location.
 \item \code{OPEID6} \emph{integer} - A code for one IHD, which may have multiple campuses.
-\item \code{Name} \emph{string} - The name of the Institution of Higher Education.
-\item \code{Campus} \emph{string} - The name for the campus, optional
-\item \code{Search} \emph{string} - A search term for finding files relevant to the school.
+\item \code{Name} \emph{character} - The name of the Institution of Higher Education.
+\item \code{Campus} \emph{character} - The name for the campus, optional
+\item \code{Search} \emph{character} - A search term for finding files relevant to the school.
 }
 }
 \source{

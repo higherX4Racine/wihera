@@ -1,34 +1,28 @@
 #' Convert Higher Expectations' data layout to HERA's dashboard layout
 #'
-#' @param .x _tibble_ - a data frame produced by `read_grads_times_credits`.
+#' @param .x _tibble_ - a data frame produced by `read_graduation_cc_or_tech`.
 #'
-#' @return a data frame in the HERA dashboard format. It does not have the `Cohort` field.
+#' @return a data frame in the HERA dashboard format.
 #'
 #' * `Degree/Certificate` _character_ - The pertinent credential track for the `Measure`.
 #' * `Measure` _character_ - The indicator that is quantified by `Outcome`.
 #' * `Enrollment at entry` _character_ - Whether the students are full- or part-time.
 #' * `Demographic Group` _character_ - A type of demographic group, like race or age.
 #' * `Detail` _character_ - A specific demographic group, like `Latine` or `18-24`.
+#' * `Cohort` _integer_ - If present, the denominator to use to convert `Outcome` to a percentage.
 #' * `Outcome` _numeric_ - A quantitative `Measure` of some aspect of the school's performance.
 #'
 #' @export
-dashboardify_grads_times_credits <- function(.x) {
+dashboardify_graduation_cc_or_tech <- function(.x) {
     .x |>
         dplyr::select(
-            "Degree/Certificate",
-            "Enrollment at entry",
-            "Demographic Group",
-            "Detail",
-            "Average time to degree",
-            "Average credits to degree"
+            !tidyselect::any_of("Program Length")
         ) |>
-        tidyr::pivot_longer(
-            cols = tidyselect::all_of(c(
-                "Average time to degree",
-                "Average credits to degree"
-            )),
-            names_to = "Measure",
-            values_to = "Outcome"
+        dplyr::mutate(
+            `Degree/Certificate` = "Degree/certificate program of less than 4 years (aggregate for Tableau)",
+            Measure = verbose_completion_time(.data$`Completion Time`),
+            Outcome = .data$Count,
+            .keep = "unused"
         ) |>
         relocate_for_dashboard()
 }

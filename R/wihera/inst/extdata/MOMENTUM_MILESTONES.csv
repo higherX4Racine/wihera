@@ -1,0 +1,9 @@
+Order,Milestone,Status,Measure
+1,First Term Credits,Completed,"Completed credit hours within first term (15+ if entered full-time, 9+ if entered part-time)"
+2,First Year Credits,Completed,"Completed credit hours within first year (30+ if entered full-time, 15+ if entered part-time)"
+3,Gateway Math,Completed,Completed or exempt from gateway Math
+4,Gateway Math,Exempt,Completed or exempt from gateway Math
+5,Gateway English,Completed,Completed or exempt from gateway English
+6,Gateway English,Exempt,Completed or exempt from gateway English
+7,Met All Milestones,Completed,"Completed or exempt from gateway math AND completed or exempt from gateway English AND completed credit hours within first year (30+ if entered full-time, 15+ if entered part-time)"
+8,Declared Major,Completed,Declared a major/program within first year
