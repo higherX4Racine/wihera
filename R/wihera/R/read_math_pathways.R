@@ -22,7 +22,7 @@ read_math_pathways <- function(.file_name) {
             col_names = c(
                 "Population",
                 "Cohort",
-                MATH_PATHWAY_NAMES
+                wihera::MATH_PATHWAY_NAMES
             ),
             col_types = c("text", rep("numeric", 8)),
             na = c("", "NA", "N/A", "DS")
@@ -42,7 +42,7 @@ read_math_pathways <- function(.file_name) {
         readxl::read_xlsx(
             sheet = "Math Pathways",
             range = "C7:I7",
-            col_names = MATH_PATHWAY_NAMES,
+            col_names = wihera::MATH_PATHWAY_NAMES,
             col_types = "text",
             na = c("", "NA", "N/A", "DS")
         ) |>

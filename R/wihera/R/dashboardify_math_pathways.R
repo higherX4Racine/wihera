@@ -19,13 +19,19 @@ dashboardify_math_pathways <- function(.x) {
         ) |>
         dplyr::mutate(
             Measure = dplyr::case_when(
-                stringr::str_detect(.data$Pathway,
-                                    utils::tail(MATH_PATHWAY_NAMES, 1)) ~
+                stringr::str_detect(
+                    .data$Pathway,
+                    pattern = utils::tail(wihera::MATH_PATHWAY_NAMES, 1)
+                ) ~
                     "Completed more than one gateway math course within first year",
-                stringr::str_detect(.data$Pathway,
-                                    utils::head(MATH_PATHWAY_NAMES, 1)) ~
+                stringr::str_detect(
+                    .data$Pathway,
+                    pattern = utils::head(wihera::MATH_PATHWAY_NAMES, 1)
+                ) ~
                     "Exempt from gateway Math course",
-                TRUE ~ glue::glue("Completed gateway {.data$Pathway} within first year")
+                TRUE ~ glue::glue(
+                    "Completed gateway {.data$Pathway} within first year"
+                )
             ),
             Outcome = .data$Count,
             .keep = "unused"

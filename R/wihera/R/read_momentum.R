@@ -22,20 +22,20 @@ read_momentum <- function(.file_name) {
             col_names = c(
                 "Population",
                 "Cohort",
-                MOMENTUM_MILESTONES$Order
+                wihera::MOMENTUM_MILESTONES$Order
             ),
             col_types = c("text", rep("numeric", 9)),
             na = c("", "NA", "N/A", "DS")
         ) |>
         wrangle_population_and_enrollment_status() |>
         tidyr::pivot_longer(
-            cols = as.character(MOMENTUM_MILESTONES$Order),
+            cols = as.character(wihera::MOMENTUM_MILESTONES$Order),
             names_to = "Order",
             names_transform = as.integer,
             values_to = "Count"
         ) |>
         dplyr::left_join(
-            dplyr::select(MOMENTUM_MILESTONES, "Order":"Status"),
+            dplyr::select(wihera::MOMENTUM_MILESTONES, "Order":"Status"),
             by = "Order"
         ) |>
         dplyr::select(

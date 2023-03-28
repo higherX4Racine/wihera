@@ -27,7 +27,7 @@ dashboardify_momentum <- function(.x) {
         ) |>
         dplyr::ungroup() |>
         dplyr::left_join(
-            dplyr::distinct(MOMENTUM_MILESTONES,
+            dplyr::distinct(wihera::MOMENTUM_MILESTONES,
                             .data$Milestone,
                             .data$Measure),
             by = "Milestone"
