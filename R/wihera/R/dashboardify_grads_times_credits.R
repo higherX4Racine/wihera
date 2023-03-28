@@ -9,19 +9,12 @@
 #' * `Enrollment at entry` _character_ - Whether the students are full- or part-time.
 #' * `Demographic Group` _character_ - A type of demographic group, like race or age.
 #' * `Detail` _character_ - A specific demographic group, like `Latine` or `18-24`.
+#' * `Cohort` _integer_ - The number of students that belong to this group.
 #' * `Outcome` _numeric_ - A quantitative `Measure` of some aspect of the school's performance.
 #'
 #' @export
 dashboardify_grads_times_credits <- function(.x) {
     .x |>
-        dplyr::select(
-            "Degree/Certificate",
-            "Enrollment at entry",
-            "Demographic Group",
-            "Detail",
-            "Average time to degree",
-            "Average credits to degree"
-        ) |>
         tidyr::pivot_longer(
             cols = tidyselect::all_of(c(
                 "Average time to degree",

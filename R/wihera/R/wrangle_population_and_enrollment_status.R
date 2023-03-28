@@ -41,7 +41,7 @@ wrangle_population_and_enrollment_status <- function(.x){
         tidyr::separate(
             col = "Population",
             into = c("Demographic Group", "Detail"),
-            sep = ": ",
+            sep = ":",
             fill = "right"
         ) |>
         dplyr::mutate(
@@ -53,6 +53,7 @@ wrangle_population_and_enrollment_status <- function(.x){
             ),
             Detail = dplyr::case_match(
                 .data$Detail |>
+                    stringr::str_trim() |>
                     stringr::str_extract("^(\\w+)") |>
                     stringr::str_to_lower(),
                 NA ~ "All Students",
@@ -69,8 +70,9 @@ wrangle_population_and_enrollment_status <- function(.x){
                 "female" ~ "Female",
                 "17" ~ "17-19 years old",
                 "20" ~ "20-24 years old",
-                "age" ~ "Age 25 and over",
-                "received" ~ "Received Pell Grant"
+                c("age", "25") ~ "Age 25 and over",
+                "received" ~ "Received Pell Grant",
+                .default = NA
             )
         )
 }

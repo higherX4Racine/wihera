@@ -75,13 +75,28 @@ The next step is to use each of the sheet-specific import functions to read the 
 
 ```{r import_the_data}
 example_data <- list(
-    "Graduates Time and Credits" = wihera::read_grads_times_credits,
-    "Graduation - Bachelors degrees" = wihera::read_graduation_bachelors,
+    "Graduates' Time and Credits" = wihera::read_grads_times_credits,
+    "Graduation - Bachelor's Degrees" = wihera::read_graduation_bachelors,
     "Graduation - Programs < 4 years" = wihera::read_graduation_cc_or_tech,
     "Math Pathways" = wihera::read_math_pathways,
     "Momentum in First Year" = wihera::read_momentum,
     "Retention" = wihera::read_retention
 ) |>
     purrr::map(~ .(.WI_STATE_FILE))
+```
 
+once imported, we can convert them into the format that Tableau will expect
+
+```{r prepare_the_data_for_tableau}
+dashboard_data <- list(
+    "Graduates' Time and Credits" = wihera::dashboardify_grads_times_credits,
+    "Graduation - Bachelor's Degrees" = wihera::dashboardify_graduation_bachelors,
+    "Graduation - Programs < 4 years" = wihera::dashboardify_graduation_cc_or_tech,
+    "Math Pathways" = wihera::dashboardify_math_pathways,
+    "Momentum in First Year" = wihera::dashboardify_momentum,
+    "Retention" = wihera::dashboardify_retention
+) |>
+    purrr::imap(~ .x(example_data[[.y]])) |>
+    purrr::list_rbind(names_to = "Source Tab") |>
+    wihera::relocate_for_dashboard()
 ```

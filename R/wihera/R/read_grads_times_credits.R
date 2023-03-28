@@ -23,7 +23,7 @@ read_grads_times_credits <- function(.file_name) {
             range = "A6:E149",
             col_names = c("Degree/Certificate",
                           "Population",
-                          "Count",
+                          "Cohort",
                           "Average credits to degree",
                           "Average time to degree"),
             col_types = c(rep("text", 2),
@@ -31,7 +31,9 @@ read_grads_times_credits <- function(.file_name) {
             na = c("", "NA", "N/A", "DS")
         ) |>
         dplyr::mutate(
-            `Degree/Certificate` = fill_down_when_blank(.data$`Degree/Certificate`)
+            `Degree/Certificate` = .data$`Degree/Certificate` |>
+                fill_down_when_blank() |>
+                stringr::str_trim()
         ) |>
         wrangle_population_and_enrollment_status()
 }
