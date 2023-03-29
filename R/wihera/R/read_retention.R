@@ -14,7 +14,7 @@
 read_retention <- function(.file_name) {
 
     .file_name |>
-        readxl::read_xlsx(
+        surly_read_xlsx(
             sheet = "Retention",
             range = "A6:C41",
             col_names = c(
@@ -23,7 +23,7 @@ read_retention <- function(.file_name) {
                 "Count"
             ),
             col_types = c("text", "numeric", "numeric"),
-            na = c("", "NA", "N/A", "DS")
+            na = NA_VALUES
         ) |>
         wrangle_population_and_enrollment_status()
 }

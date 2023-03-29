@@ -16,7 +16,7 @@
 read_graduation_cc_or_tech <- function(.file_name) {
 
     .file_name |>
-        readxl::read_xlsx(
+        surly_read_xlsx(
             sheet = "Graduation - Programs < 4 years",
             range = "B8:G43",
             col_names = c(
@@ -29,7 +29,7 @@ read_graduation_cc_or_tech <- function(.file_name) {
             ),
             col_types = c("text",
                           rep("numeric", 5)),
-            na = c("", "NA", "N/A", "DS")
+            na = NA_VALUES
         ) |>
         wrangle_population_and_enrollment_status() |>
         tidyr::pivot_longer(

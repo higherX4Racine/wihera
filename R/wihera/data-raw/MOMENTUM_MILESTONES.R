@@ -8,4 +8,4 @@ MOMENTUM_MILESTONES <- system.file("extdata",
         .default = readr::col_character()
     ))
 
-usethis::use_data(MOMENTUM_MILESTONES, overwrite = TRUE)
+usethis::use_data(MOMENTUM_MILESTONES, internal = TRUE, overwrite = TRUE)

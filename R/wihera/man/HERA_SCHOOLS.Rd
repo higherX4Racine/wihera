@@ -5,7 +5,7 @@
 \alias{HERA_SCHOOLS}
 \title{Identifying information for finding HERA schools in the College Scorecard}
 \format{
-A tibble with 4 columns:
+A tibble with 5 columns:
 \itemize{
 \item \code{UNITID} \emph{integer} - College Scorecard code for one specific campus/location.
 \item \code{OPEID6} \emph{integer} - A code for one IHD, which may have multiple campuses.

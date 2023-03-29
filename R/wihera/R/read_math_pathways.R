@@ -16,16 +16,16 @@
 read_math_pathways <- function(.file_name) {
 
     .lhs <- .file_name |>
-        readxl::read_xlsx(
+        surly_read_xlsx(
             sheet = "Math Pathways",
             range = "A8:I11",
             col_names = c(
                 "Population",
                 "Cohort",
-                wihera::MATH_PATHWAY_NAMES
+                MATH_PATHWAY_NAMES
             ),
             col_types = c("text", rep("numeric", 8)),
-            na = c("", "NA", "N/A", "DS")
+            na = NA_VALUES
         ) |>
         wrangle_population_and_enrollment_status() |>
         tidyr::pivot_longer(
@@ -39,17 +39,17 @@ read_math_pathways <- function(.file_name) {
         )
 
     .rhs <- .file_name |>
-        readxl::read_xlsx(
+        surly_read_xlsx(
             sheet = "Math Pathways",
             range = "C7:I7",
-            col_names = wihera::MATH_PATHWAY_NAMES,
+            col_names = MATH_PATHWAY_NAMES,
             col_types = "text",
-            na = c("", "NA", "N/A", "DS")
+            na = NA_VALUES
         ) |>
         t() |>
         tibble::as_tibble(
             rownames = "Pathway",
-            .name_repair = ~ "Offered"
+            .name_repair = ~ rep("Offered", length(.))
         )
 
     dplyr::left_join(.lhs,

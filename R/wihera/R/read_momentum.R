@@ -16,26 +16,26 @@
 read_momentum <- function(.file_name) {
 
     .file_name |>
-        readxl::read_xlsx(
+        surly_read_xlsx(
             sheet = "Momentum in First Year",
             range = "A6:J41",
             col_names = c(
                 "Population",
                 "Cohort",
-                wihera::MOMENTUM_MILESTONES$Order
+                MOMENTUM_MILESTONES$Order
             ),
             col_types = c("text", rep("numeric", 9)),
-            na = c("", "NA", "N/A", "DS")
+            na = NA_VALUES
         ) |>
         wrangle_population_and_enrollment_status() |>
         tidyr::pivot_longer(
-            cols = as.character(wihera::MOMENTUM_MILESTONES$Order),
+            cols = as.character(MOMENTUM_MILESTONES$Order),
             names_to = "Order",
             names_transform = as.integer,
             values_to = "Count"
         ) |>
         dplyr::left_join(
-            dplyr::select(wihera::MOMENTUM_MILESTONES, "Order":"Status"),
+            dplyr::select(MOMENTUM_MILESTONES, "Order":"Status"),
             by = "Order"
         ) |>
         dplyr::select(

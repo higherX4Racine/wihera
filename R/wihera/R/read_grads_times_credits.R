@@ -18,7 +18,7 @@
 read_grads_times_credits <- function(.file_name) {
 
     .file_name |>
-        readxl::read_xlsx(
+        surly_read_xlsx(
             sheet = "Graduates Time and Credits",
             range = "A6:E149",
             col_names = c("Degree/Certificate",
@@ -28,7 +28,7 @@ read_grads_times_credits <- function(.file_name) {
                           "Average time to degree"),
             col_types = c(rep("text", 2),
                           rep("numeric", 3)),
-            na = c("", "NA", "N/A", "DS")
+            na = NA_VALUES
         ) |>
         dplyr::mutate(
             `Degree/Certificate` = .data$`Degree/Certificate` |>

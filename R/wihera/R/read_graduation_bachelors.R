@@ -15,7 +15,7 @@
 read_graduation_bachelors <- function(.file_name) {
 
     .file_name |>
-        readxl::read_xlsx(
+        surly_read_xlsx(
             sheet = "Graduation - Bachelors degrees",
             range = "B6:E41",
             col_names = c("Population",
@@ -24,7 +24,7 @@ read_graduation_bachelors <- function(.file_name) {
                               "{c(10,15)}0%"
                           )),
             col_types = c("text", rep("numeric", 3)),
-            na = c("", "NA", "N/A", "DS"),
+            na = NA_VALUES,
             .name_repair = "minimal"
         ) |>
         wrangle_population_and_enrollment_status() |>
