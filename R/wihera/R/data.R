@@ -1,17 +1,32 @@
+#' Metadata for reading College Scorecard data for HERA dashboards
+#'
+#' @format a tibble with eight columns:
+#'
+#' * `API data type` _character_ - usually either "float" or "integer".
+#' * `Variable` _character_ - The name of the variable in the US Ed db.
+#' * `Measure` _character_ - The actual quantity being measured.
+#' * `Degree Duration` _character_ - Are we talking about a 2y or 4y cohort
+#' * `Demographic Category` _character_ - Race, financial aid, sex, etc.
+#' * `Demographic Detail` _character_ - The specific level within the category.
+#' * `Enrollment Status` _character_ Full- or Part-time.
+#' * `Specification` _character_ - depends upon `API data type`.
+"COLLEGE_SCORECARD_SCHEMA"
+
+
 #' Identifying information for finding HERA schools in the College Scorecard
 #'
 #' The U.S. Department of Education maintains a database of demographic and
 #' performance measures for participating institutions of higher education.
 #' Southeastern Wisconsin has a confederation of such schools, the Higher
 #' Education Regional Alliance.
-#' @format A tibble with 5 columns:
+#' @format A tibble with 6 columns:
 #'
 #' * `UNITID` _integer_ - College Scorecard code for one specific campus/location.
 #' * `OPEID6` _integer_ - A code for one IHD, which may have multiple campuses.
 #' * `Name` _character_ - The name of the Institution of Higher Education.
 #' * `Campus` _character_ - The name for the campus, optional
 #' * `Search` _character_ - A search term for finding files relevant to the school.
-#'
+#' * `Institution` _character_ - The school's name in HERA's Tableau dashboard.
 #' @source [College Scorecard](https://collegescorecard.ed.gov/data/)
 "HERA_SCHOOLS"
 

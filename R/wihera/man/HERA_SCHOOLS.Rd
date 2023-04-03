@@ -5,13 +5,14 @@
 \alias{HERA_SCHOOLS}
 \title{Identifying information for finding HERA schools in the College Scorecard}
 \format{
-A tibble with 5 columns:
+A tibble with 6 columns:
 \itemize{
 \item \code{UNITID} \emph{integer} - College Scorecard code for one specific campus/location.
 \item \code{OPEID6} \emph{integer} - A code for one IHD, which may have multiple campuses.
 \item \code{Name} \emph{character} - The name of the Institution of Higher Education.
 \item \code{Campus} \emph{character} - The name for the campus, optional
 \item \code{Search} \emph{character} - A search term for finding files relevant to the school.
+\item \code{Institution} \emph{character} - The school's name in HERA's Tableau dashboard.
 }
 }
 \source{

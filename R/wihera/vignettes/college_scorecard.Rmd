@@ -1,0 +1,174 @@
+---
+title: "College Scorecard Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{College Scorecard Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+```{r setup}
+.DATA_DIR <- "DATA_PATH" |>
+    Sys.getenv() |>
+    file.path(
+        "Downloads",
+        "US Dept of Ed College Scorecard"
+    )
+
+.SCORECARD_FILES <- .DATA_DIR |>
+    dir(
+        pattern = "*csv*",
+        full.names = TRUE
+    )
+
+.extract_year <- function(.paths){
+    .paths |>
+        stringr::str_extract(
+            "MERGED(\\d{4})_",
+            group = 1
+        ) |>
+        strtoi()
+}
+
+.SCORECARD_SPEC <- readr::cols_only(
+    UNITID = readr::col_double(),
+    OPEID6 = readr::col_integer(),
+    HIGHDEG = readr::col_integer(),
+    UG = readr::col_integer(),
+    UGDS = readr::col_integer(),
+    RET_FT4 = readr::col_double(),
+    RET_FTL4 = readr::col_double(),
+    C150_4 = readr::col_double(),
+    C150_L4 = readr::col_double(),
+    D150_4 = readr::col_integer(),
+    D150_L4 = readr::col_integer(),
+    SCUGFFN = readr::col_integer(),
+    ST_FIPS = readr::col_integer(),
+)
+
+parse_scorecard_file <- function(.full_path, .year, .spec = .SCORECARD_SPEC){
+    .full_path |>
+            readr::read_csv(
+            na = c("", "NA", "NULL"),
+            col_types = .spec,
+            show_col_types = FALSE
+        ) |>
+        dplyr::mutate(
+            `School Year` = .year,
+            Students = dplyr::coalesce(.data$UGDS,
+                                       .data$UG),
+            `Class Size` = dplyr::coalesce(.data$D150_4,
+                                           .data$D150_L4),
+            `Retention Rate` = dplyr::coalesce(.data$RET_FT4,
+                                               .data$RET_FTL4),
+            Returners = .data$`Class Size` * .data$`Retention Rate`,
+            `Graduation Rate` = dplyr::coalesce(.data$C150_4,
+                                                .data$C150_L4),
+            Graduates = .data$`Class Size` * .data$`Graduation Rate`
+        ) |>
+        dplyr::rename(
+            `New Students` = "SCUGFFN"
+        ) |>
+        dplyr::group_by(
+            .data$OPEID6,
+            .data$`School Year`
+        ) |>
+        dplyr::summarize(
+            dplyr::across(c(
+                "Students",
+                "Class Size",
+                "New Students",
+                "Returners",
+                "Graduates"
+            ),
+            ~ sum(., na.rm = TRUE)),
+            .groups = "keep"
+        ) |>
+        dplyr::ungroup() |>
+        dplyr::mutate(
+            `Retention Rate` = .data$Returners / .data$`Class Size`,
+            `Graduation Rate` = .data$Graduates / .data$`Class Size`
+        ) |>
+        invisible()
+}
+
+```
+
+```{r practice_importing}
+alotta_schools <- .SCORECARD_FILES |>
+    tail(1) |>
+    readr::read_csv(
+        col_types = rlang::exec(
+            readr::cols_only,
+            UNITID = readr::col_double(),
+            OPEID6 = readr::col_integer(),
+            !!!with(wihera::COLLEGE_SCORECARD_SCHEMA,
+                    rlang::set_names(Specification,
+                                     Variable))
+        ),
+        na = c("", "NA", "#N/A", "NULL"),
+            show_col_types = FALSE
+
+    )
+```
+```{r practice_wrangling}
+a_few_schools <- wihera::HERA_SCHOOLS |>
+    dplyr::select(
+        "UNITID",
+        "OPEID6",
+        "Name",
+        "Campus"
+    ) |>
+    dplyr::left_join(
+        alotta_schools,
+        by = c("UNITID",
+               "OPEID6")
+    ) |>
+    dplyr::select(
+        !tidyselect::where(~ all(is.na(.)))
+    ) |>
+    tidyr::pivot_longer(
+        cols = tidyselect::contains("_"),
+        names_to = c("Variable"),
+        values_to = "Value"
+    ) |>
+    dplyr::filter(
+        !is.na(.data$Value)
+    ) |>
+    dplyr::left_join(
+        dplyr::select(wihera::COLLEGE_SCORECARD_SCHEMA,
+                      "Variable",
+                      "Measure",
+                      "Enrollment Status",
+                      "Demographic Category",
+                      "Demographic Detail"),
+        by = "Variable"
+    ) |>
+    dplyr::group_by(
+        .data$Name,
+        .data$Campus,
+        .data$`Enrollment Status`,
+        .data$`Demographic Category`,
+        .data$`Demographic Detail`,
+        .data$Measure
+    ) |>
+    dplyr::summarize(
+        Value = sum(.data$Value, na.rm = TRUE),
+        Undergraduates = max(.data$UGDS, na.rm = TRUE),
+        .groups = "keep"
+    ) |>
+    dplyr::ungroup(
+    ) |>
+    tidyr::pivot_wider(
+        names_from = "Measure",
+        values_from = "Value",
+        values_fill = NA
+    )
+```

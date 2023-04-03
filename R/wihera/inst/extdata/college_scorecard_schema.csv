@@ -1,0 +1,101 @@
+API data type,Variable,Measure,Degree Duration,Demographic Category,Demographic Detail,Enrollment Status
+float,C150_4,150% Completion Rate,Four Years,All,All,Full Time
+float,C150_4_2MOR,150% Completion Rate,Four Years,Race/Ethnicity,Two or More Races,Full Time
+float,C150_4_AIAN,150% Completion Rate,Four Years,Race/Ethnicity,American Indian/Alaska Native,Full Time
+float,C150_4_AIANOLD,150% Completion Rate,Four Years,Race/Ethnicity,American Indian/Alaska Native,Full Time
+float,C150_4_API,150% Completion Rate,Four Years,Race/Ethnicity,Asian/Pacific Islander,Full Time
+float,C150_4_ASIAN,150% Completion Rate,Four Years,Race/Ethnicity,Asian,Full Time
+float,C150_4_BLACK,150% Completion Rate,Four Years,Race/Ethnicity,Black/African American,Full Time
+float,C150_4_BLACKNH,150% Completion Rate,Four Years,Race/Ethnicity,Black/African American,Full Time
+float,C150_4_HISP,150% Completion Rate,Four Years,Race/Ethnicity,Hispanic,Full Time
+float,C150_4_HISPOLD,150% Completion Rate,Four Years,Race/Ethnicity,Hispanic,Full Time
+float,C150_4_LOANNOPELL,150% Completion Rate,Four Years,Financial Need,Loan but no Pell Grant,Full Time
+float,C150_4_NHPI,150% Completion Rate,Four Years,Race/Ethnicity,Native Hawaiian/Pacific Islander,Full Time
+float,C150_4_NOLOANNOPELL,150% Completion Rate,Four Years,Financial Need,No Loan and no Pell Grant,Full Time
+float,C150_4_NRA,150% Completion Rate,Four Years,Immigration Status,Non-resident alien,Full Time
+float,C150_4_PELL,150% Completion Rate,Four Years,Financial Need,Received Pell Grant,Full Time
+float,C150_4_UNKN,150% Completion Rate,Four Years,Race/Ethnicity,Unknown,Full Time
+float,C150_4_WHITE,150% Completion Rate,Four Years,Race/Ethnicity,White,Full Time
+float,C150_4_WHITENH,150% Completion Rate,Four Years,Race/Ethnicity,White,Full Time
+float,C150_L4,150% Completion Rate,Less than Four Years,All,All,Full Time
+float,C150_L4_2MOR,150% Completion Rate,Less than Four Years,Race/Ethnicity,Two or More Races,Full Time
+float,C150_L4_AIAN,150% Completion Rate,Less than Four Years,Race/Ethnicity,American Indian/Alaska Native,Full Time
+float,C150_L4_AIANOLD,150% Completion Rate,Less than Four Years,Race/Ethnicity,American Indian/Alaska Native,Full Time
+float,C150_L4_API,150% Completion Rate,Less than Four Years,Race/Ethnicity,Asian/Pacific Islander,Full Time
+float,C150_L4_ASIAN,150% Completion Rate,Less than Four Years,Race/Ethnicity,Asian,Full Time
+float,C150_L4_BLACK,150% Completion Rate,Less than Four Years,Race/Ethnicity,Black/African American,Full Time
+float,C150_L4_BLACKNH,150% Completion Rate,Less than Four Years,Race/Ethnicity,Black/African American,Full Time
+float,C150_L4_HISP,150% Completion Rate,Less than Four Years,Race/Ethnicity,Hispanic,Full Time
+float,C150_L4_HISPOLD,150% Completion Rate,Less than Four Years,Race/Ethnicity,Hispanic,Full Time
+float,C150_L4_LOANNOPELL,150% Completion Rate,Less than Four Years,Financial Need,Loan but no Pell Grant,Full Time
+float,C150_L4_NHPI,150% Completion Rate,Less than Four Years,Race/Ethnicity,Native Hawaiian/Pacific Islander,Full Time
+float,C150_L4_NOLOANNOPELL,150% Completion Rate,Less than Four Years,Financial Need,No Loan and no Pell Grant,Full Time
+float,C150_L4_NRA,150% Completion Rate,Less than Four Years,Immigration Status,Non-resident alien,Full Time
+float,C150_L4_PELL,150% Completion Rate,Less than Four Years,Financial Need,Received Pell Grant,Full Time
+float,C150_L4_UNKN,150% Completion Rate,Less than Four Years,Race/Ethnicity,Unknown,Full Time
+float,C150_L4_WHITE,150% Completion Rate,Less than Four Years,Race/Ethnicity,White,Full Time
+float,C150_L4_WHITENH,150% Completion Rate,Less than Four Years,Race/Ethnicity,White,Full Time
+integer,D150_4,Cohort Size,Four Years,All,All,Full Time
+integer,D150_4_2MOR,Cohort Size,Four Years,Race/Ethnicity,Two or More Races,Full Time
+integer,D150_4_AIAN,Cohort Size,Four Years,Race/Ethnicity,American Indian/Alaska Native,Full Time
+integer,D150_4_AIANOld,Cohort Size,Four Years,Race/Ethnicity,American Indian/Alaska Native,Full Time
+integer,D150_4_API,Cohort Size,Four Years,Race/Ethnicity,Asian/Pacific Islander,Full Time
+integer,D150_4_ASIAN,Cohort Size,Four Years,Race/Ethnicity,Asian,Full Time
+integer,D150_4_BLACK,Cohort Size,Four Years,Race/Ethnicity,Black/African American,Full Time
+integer,D150_4_BLACKNH,Cohort Size,Four Years,Race/Ethnicity,Black/African American,Full Time
+integer,D150_4_HISP,Cohort Size,Four Years,Race/Ethnicity,Hispanic,Full Time
+integer,D150_4_HISPOld,Cohort Size,Four Years,Race/Ethnicity,Hispanic,Full Time
+integer,D150_4_LOANNOPELL,Cohort Size,Four Years,Financial Need,Loan but no Pell Grant,Full Time
+integer,D150_4_NHPI,Cohort Size,Four Years,Race/Ethnicity,Native Hawaiian/Pacific Islander,Full Time
+integer,D150_4_NOLOANNOPELL,Cohort Size,Four Years,Financial Need,No Loan and no Pell Grant,Full Time
+integer,D150_4_NRA,Cohort Size,Four Years,Immigration Status,Non-resident alien,Full Time
+integer,D150_4_PELL,Cohort Size,Four Years,Financial Need,Received Pell Grant,Full Time
+integer,D150_4_UNKN,Cohort Size,Four Years,Race/Ethnicity,Unknown,Full Time
+integer,D150_4_WHITE,Cohort Size,Four Years,Race/Ethnicity,White,Full Time
+integer,D150_4_WHITENH,Cohort Size,Four Years,Race/Ethnicity,White,Full Time
+integer,D150_L4,Cohort Size,Less than Four Years,All,All,Full Time
+integer,D150_L4_2MOR,Cohort Size,Less than Four Years,Race/Ethnicity,Two or More Races,Full Time
+integer,D150_L4_AIAN,Cohort Size,Less than Four Years,Race/Ethnicity,American Indian/Alaska Native,Full Time
+integer,D150_L4_AIANOld,Cohort Size,Less than Four Years,Race/Ethnicity,American Indian/Alaska Native,Full Time
+integer,D150_L4_API,Cohort Size,Less than Four Years,Race/Ethnicity,Asian/Pacific Islander,Full Time
+integer,D150_L4_ASIAN,Cohort Size,Less than Four Years,Race/Ethnicity,Asian,Full Time
+integer,D150_L4_BLACK,Cohort Size,Less than Four Years,Race/Ethnicity,Black/African American,Full Time
+integer,D150_L4_BLACKNH,Cohort Size,Less than Four Years,Race/Ethnicity,Black/African American,Full Time
+integer,D150_L4_HISP,Cohort Size,Less than Four Years,Race/Ethnicity,Hispanic,Full Time
+integer,D150_L4_HISPOld,Cohort Size,Less than Four Years,Race/Ethnicity,Hispanic,Full Time
+integer,D150_L4_LOANNOPELL,Cohort Size,Less than Four Years,Financial Need,Loan but no Pell Grant,Full Time
+integer,D150_L4_NHPI,Cohort Size,Less than Four Years,Race/Ethnicity,Native Hawaiian/Pacific Islander,Full Time
+integer,D150_L4_NOLOANNOPELL,Cohort Size,Less than Four Years,Financial Need,No Loan and no Pell Grant,Full Time
+integer,D150_L4_NRA,Cohort Size,Less than Four Years,Immigration Status,Non-resident alien,Full Time
+integer,D150_L4_PELL,Cohort Size,Less than Four Years,Financial Need,Received Pell Grant,Full Time
+integer,D150_L4_UNKN,Cohort Size,Less than Four Years,Race/Ethnicity,Unknown,Full Time
+integer,D150_L4_WHITE,Cohort Size,Less than Four Years,Race/Ethnicity,White,Full Time
+integer,D150_L4_WHITENH,Cohort Size,Less than Four Years,Race/Ethnicity,White,Full Time
+float,RET_FT4,Year-to-year Retention Rate,Four Years,All,All,Full Time
+float,RET_FTL4,Year-to-year Retention Rate,Less than Four Years,All,All,Full Time
+float,RET_PT4,Year-to-year Retention Rate,Four Years,All,All,Part Time
+float,RET_PTL4,Year-to-year Retention Rate,Less than Four Years,All,All,Part Time
+integer,UG,Students,Any,All,All,Full Time
+float,UG_AIANOLD,Proportion of Students,Any,Race/Ethnicity,American Indian/Alaska Native,Full Time
+float,UG_API,Proportion of Students,Any,Race/Ethnicity,Asian/Pacific Islander,Full Time
+float,UG_BLACKNH,Proportion of Students,Any,Race/Ethnicity,Black/African American,Full Time
+float,UG_HISPOLD,Proportion of Students,Any,Race/Ethnicity,Hispanic,Full Time
+float,UG_NRA,Proportion of Students,Any,Immigration Status,Non-resident alien,Full Time
+float,UG_UNKN,Proportion of Students,Any,Race/Ethnicity,Unknown,Full Time
+float,UG_WHITENH,Proportion of Students,Any,Race/Ethnicity,White,Full Time
+integer,UGDS,Students,Any,All,All,Full Time
+float,UGDS_2MOR,Proportion of Students,Any,Race/Ethnicity,Two or More Races,Full Time
+float,UGDS_AIAN,Proportion of Students,Any,Race/Ethnicity,American Indian/Alaska Native,Full Time
+float,UGDS_AIANOLD,Proportion of Students,Any,Race/Ethnicity,American Indian/Alaska Native,Full Time
+float,UGDS_API,Proportion of Students,Any,Race/Ethnicity,Asian/Pacific Islander,Full Time
+float,UGDS_ASIAN,Proportion of Students,Any,Race/Ethnicity,Asian,Full Time
+float,UGDS_BLACK,Proportion of Students,Any,Race/Ethnicity,Black/African American,Full Time
+float,UGDS_BLACKNH,Proportion of Students,Any,Race/Ethnicity,Black/African American,Full Time
+float,UGDS_HISP,Proportion of Students,Any,Race/Ethnicity,Hispanic,Full Time
+float,UGDS_HISPOLD,Proportion of Students,Any,Race/Ethnicity,Hispanic,Full Time
+float,UGDS_MEN,Proportion of Students,Any,Sex,Male,Full Time
+float,UGDS_NHPI,Proportion of Students,Any,Race/Ethnicity,Native Hawaiian/Pacific Islander,Full Time
+float,UGDS_NRA,Proportion of Students,Any,Immigration Status,Non-resident alien,Full Time
+float,UGDS_UNKN,Proportion of Students,Any,Race/Ethnicity,Unknown,Full Time
+float,UGDS_WHITENH,Proportion of Students,Any,Race/Ethnicity,White,Full Time
+float,UGDS_WOMEN,Proportion of Students,Any,Sex,Women,Full Time
