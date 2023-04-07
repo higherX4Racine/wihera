@@ -29,6 +29,7 @@ ipeds_zipped_csv <- function(.year, .survey_code, .table_code, .path){
 }
 
 ipeds_read_with_schema <- function(.file, .schema, .nas = c("", "NA", ".")){
+
     .raw <- .file |>
         readr::read_csv(
             col_types = readr::cols(.default = readr::col_character())
@@ -78,15 +79,10 @@ ipeds_read_with_schema <- function(.file, .schema, .nas = c("", "NA", ".")){
             by = intersect(names(.data_part),
                            names(.imputation_part))
         ) |>
-        dplyr::mutate(
-            Measure = factor(.data$varnumber,
-                             levels = .schema$varnumber,
-                             labels = .schema$varTitle)
-        ) |>
         dplyr::select(
             tidyselect::any_of(c(
                 .id_columns,
-                "Measure",
+                "varnumber",
                 "Value",
                 "Imputation"
             ))
