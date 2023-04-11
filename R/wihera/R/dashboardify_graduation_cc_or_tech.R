@@ -1,6 +1,6 @@
 #' Convert Higher Expectations' data layout to HERA's dashboard layout
 #'
-#' @param .x _tibble_ - a data frame produced by `read_graduation_cc_or_tech`.
+#' @param .x _tibble_ - a data frame produced by [read_graduation_cc_or_tech()].
 #'
 #' @return a data frame in the HERA dashboard format.
 #'

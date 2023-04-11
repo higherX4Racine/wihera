@@ -1,3 +1,11 @@
+#' Wrangle imported IPEDS data about graduation into dashboardable long format
+#'
+#' @param .demographic which demographic to wrangle
+#' @param .completions the source tibble with lots of different demographics
+#' @param .schema a tibble that describes how the demographic groups nest.
+#'
+#' @return a tibble of tidy graduation data
+#' @export
 ipeds_wrangle_completions <- function(.demographic, .completions, .schema){
     .completions |>
         dplyr::right_join(

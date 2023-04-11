@@ -24,10 +24,13 @@ LazyData: true
 Imports: 
     archive,
     cli,
+    curl,
     dplyr,
+    forcats,
     glue,
     lubridate,
     purrr,
+    readr,
     readxl,
     rlang,
     stringr,

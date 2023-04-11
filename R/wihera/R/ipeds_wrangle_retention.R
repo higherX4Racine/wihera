@@ -1,10 +1,25 @@
+#' Wrangle imported IPEDS data about retention into dashboardable long format
+#'
+#' @param .retentions a source tibble with lots of different demographics
+#' @param .schema a tibble that describes how the demographic groups nest.
+#'
+#' @return a tibble of tidy retention data
+#' @export
 ipeds_wrangle_retention <- function(.retentions, .schema){
-    .base <- .retentions |>
+    .retentions |>
         dplyr::select(
             !"Imputation"
         ) |>
         dplyr::right_join(
-            .just_variables(.schema),
+            .schema |>
+                dplyr::filter(
+                    !is.na(.data$Measure)
+                ) |>
+                dplyr::select(
+                    "varnumber",
+                    "Enrollment Status",
+                    "Measure"
+                ),
             by = "varnumber"
         ) |>
         dplyr::select(
@@ -13,19 +28,7 @@ ipeds_wrangle_retention <- function(.retentions, .schema){
             "Enrollment Status",
             "Measure",
             "Value"
-        )
-
-    .some <- .base |>
-        dplyr::filter(
-            .data$Measure == "Student-to-faculty ratio"
         ) |>
-        dplyr::select(
-            "UNITID",
-            "Year",
-            "Student-to-faculty ratio" = "Value"
-        )
-
-    .rest <- .base |>
         dplyr::filter(
             .data$Measure != "Student-to-faculty ratio"
         ) |>
@@ -35,24 +38,5 @@ ipeds_wrangle_retention <- function(.retentions, .schema){
         ) |>
         dplyr::mutate(
             "Retention Rate" = .data$Returning / .data$`Previous Fall`
-        )
-
-    dplyr::left_join(
-        .rest,
-        .some,
-        by = c("UNITID", "Year")
-    )
-
-}
-
-.just_variables <- function(.schema){
-    .schema |>
-        dplyr::filter(
-            !is.na(.data$Measure)
-            ) |>
-        dplyr::select(
-            "varnumber",
-            "Enrollment Status",
-            "Measure"
         )
 }

@@ -7,7 +7,7 @@
 dashboardify_graduation_bachelors(.x)
 }
 \arguments{
-\item{.x}{\emph{tibble} - a data frame produced by \code{read_graduation_bachelors}.}
+\item{.x}{\emph{tibble} - a data frame produced by \code{\link[=read_graduation_bachelors]{read_graduation_bachelors()}}.}
 }
 \value{
 a data frame in the HERA dashboard format.

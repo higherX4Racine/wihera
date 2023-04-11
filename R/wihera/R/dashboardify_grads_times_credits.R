@@ -1,6 +1,6 @@
 #' Convert Higher Expectations' data layout to HERA's dashboard layout
 #'
-#' @param .x _tibble_ - a data frame produced by `read_grads_times_credits`.
+#' @param .x _tibble_ - a data frame produced by [read_grads_times_credits()].
 #'
 #' @return a data frame in the HERA dashboard format. It does not have the `Cohort` field.
 #'

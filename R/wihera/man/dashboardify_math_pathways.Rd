@@ -7,7 +7,7 @@
 dashboardify_math_pathways(.x)
 }
 \arguments{
-\item{.x}{\emph{tibble} - a data frame produced by \code{read_math_pathways}.}
+\item{.x}{\emph{tibble} - a data frame produced by \code{\link[=read_math_pathways]{read_math_pathways()}}.}
 }
 \value{
 a data frame in the HERA dashboard format.

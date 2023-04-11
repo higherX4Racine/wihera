@@ -7,7 +7,7 @@
 dashboardify_grads_times_credits(.x)
 }
 \arguments{
-\item{.x}{\emph{tibble} - a data frame produced by \code{read_grads_times_credits}.}
+\item{.x}{\emph{tibble} - a data frame produced by \code{\link[=read_grads_times_credits]{read_grads_times_credits()}}.}
 }
 \value{
 a data frame in the HERA dashboard format. It does not have the \code{Cohort} field.

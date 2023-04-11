@@ -1,6 +1,6 @@
 #' Convert Higher Expectations' data layout to HERA's dashboard layout
 #'
-#' @param .x _tibble_ - a data frame produced by `read_math_pathways`.
+#' @param .x _tibble_ - a data frame produced by [read_math_pathways()].
 #'
 #' @return a data frame in the HERA dashboard format.
 #'
