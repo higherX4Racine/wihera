@@ -6,7 +6,7 @@ UNITID,OPEID6,Name,Campus,Search,Institution
 238430,3837,Cardinal Stritch University,,Stritch,Cardinal Stritch University
 238458,3838,Carroll University,,Carroll,Carroll University
 238476,3839,Carthage College,,Carthage,Carthage College
-238616,3842,Concordia University,Wisconsin,Concordia,Concordia University-Wisconsin
+238616,3842,Concordia University,Wisconsin,Concordia|CUW,Concordia University-Wisconsin
 238759,5389,Gateway Technical College,,Gateway,Gateway Technical College
 459851,9621,Herzing University,Brookfield,Herzing,Herzing University
 459842,9621,Herzing University,Kenosha,Herzing,
@@ -14,11 +14,11 @@ UNITID,OPEID6,Name,Campus,Search,Institution
 239248,3866,Milwaukee Area Technical College,,MATC,Milwaukee Area Technical College
 239309,20771,Milwaukee Institute of Art & Design,,MAIAD,Milwaukee Institute of Art and Design
 239318,3868,Milwaukee School of Engineering,,MSOE,Milwaukee School of Engineering
-239390,3869,Mount Mary University,,Mt Mary,Mount Mary University
-240453,3896,University of Wisconsin-Milwaukee,,UW[- ]Milwaukee,UW-Milwaukee
-491288,3896,University of Wisconsin-Milwaukee,Flex,UW[- ]Milwaukee,UW-Milwaukee
-240374,5015,University of Wisconsin-Parkside,,UW[- ]Parkside,UW-Parkside
-491297,5015,University of Wisconsin-Parkside,Flex,UW[- ]Parkside,UW-Parkside
-240189,3926,University of Wisconsin-Whitewater,,UW[- ]Whitewater,UW-Whitewater
+239390,3869,Mount Mary University,,M[oun]?t Mary,Mount Mary University
+240453,3896,University of Wisconsin-Milwaukee,,UW[- ]?M(ilwaukee)?,UW-Milwaukee
+491288,3896,University of Wisconsin-Milwaukee,Flex,UW[- ]?M(ilwaukee)?,UW-Milwaukee
+240374,5015,University of Wisconsin-Parkside,,UW[- ]?P(arkside)?,UW-Parkside
+491297,5015,University of Wisconsin-Parkside,Flex,UW[- ]?P(arkside)?,UW-Parkside
+240189,3926,University of Wisconsin-Whitewater,,UW[- ]?W(hitewater)?,UW-Whitewater
 240125,5294,Waukesha County Technical College,,WCTC,Waukesha County Technical College
-240338,21366,Wisconsin Lutheran College,,Lutheran,Wisconsin Lutheran College
+240338,21366,Wisconsin Lutheran College,,Lutheran|WLC,Wisconsin Lutheran College

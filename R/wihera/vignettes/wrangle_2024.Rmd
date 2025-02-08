@@ -1,0 +1,124 @@
+---
+title: "wrangle_2024"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{wrangle_2024}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  error = FALSE,
+  message = FALSE
+)
+```
+
+```{r setup}
+.TEMPLATE_FILE <- system.file("extdata",
+                              "2024_HERA_Data_Submission_form.xlsx",
+                              package = "wihera")
+
+.WI_STATE_FILE <- system.file("extdata",
+                              "2024_Example_HERA_Data_Submission_form.xlsx",
+                              package = "wihera")
+
+```
+
+The first step is to read in the template and the example file as all-text matrices.
+The example file uses data from one or more 2024 submissions, re-saved.
+
+```{r import_the_templates}
+template_sheets <- wihera::read_template(.TEMPLATE_FILE)
+
+wi_state_sheets <- wihera::read_template(.WI_STATE_FILE)
+```
+
+## Things Tableau Didn't Catch:
+
+- places where numerators were excluded (because < 10) but denominator
+
+## Template Checking
+
+There is a template sheet that each school was supposed to use to submit its data.
+Like many spreadsheets, it encodes some of its information in cell locations.
+If the schools changed the order of any of the column or row labels then there will be a mismatch between what they intended to report and what the automated import system will say that they reported.
+The following code checks each submission against the template to catch mismatches.
+
+```{r template_checking, results="asis"}
+sheet_checks <- wihera::TEMPLATE_REGIONS_2023 |>
+    purrr::imap( ~ wihera::check_school(wi_state_sheets[[.y]],
+                                        .x,
+                                        template_sheets[[.y]])
+    )
+
+purrr::iwalk(
+    sheet_checks,
+    function(.check, .sheet) {
+        cat("\n\n#### ", .sheet, "\n\n", sep = "")
+        purrr::walk(.check$messages,
+                    purrr::iwalk,
+                    wihera::mismatch_as_markdown,
+                    "#####")
+        cat("\n")
+    }
+)
+```
+
+Note that the main source of mismatches is the type of line-ending character.
+To be clear, I created the "Example" file using Excel's "Save As..." command.
+Microsoft is **THE WORST!**
+
+## Import the Data
+
+The next step is to use each of the sheet-specific import functions to read the data.
+
+```{r import_the_data}
+example_data <- list(
+    "Graduates' Time and Credits" = wihera::read_grads_times_credits,
+    "Graduation - Bachelor's Degrees" = wihera::read_graduation_bachelors,
+    "Graduation - Programs < 4 years" = wihera::read_graduation_cc_or_tech,
+    "Math Pathways" = wihera::read_math_pathways,
+    "Momentum in First Year" = wihera::read_momentum,
+    "Retention" = wihera::read_retention
+) |>
+    purrr::map(~ .(.WI_STATE_FILE))
+```
+
+once imported, we can convert them into the format that Tableau will expect
+
+```{r prepare_the_data_for_tableau}
+dashboard_data <- list(
+    "Graduates' Time and Credits" = wihera::dashboardify_grads_times_credits,
+    "Graduation - Bachelor's Degrees" = wihera::dashboardify_graduation_bachelors,
+    "Graduation - Programs < 4 years" = wihera::dashboardify_graduation_cc_or_tech,
+    "Math Pathways" = wihera::dashboardify_math_pathways,
+    "Momentum in First Year" = wihera::dashboardify_momentum,
+    "Retention" = wihera::dashboardify_retention
+) |>
+    purrr::imap(~ .x(example_data[[.y]])) |>
+    purrr::list_rbind(names_to = "Source Tab") |>
+    wihera::relocate_for_dashboard()
+```
+
+One quick check is to examine all of the rows where the "Outcome" value exceeds
+the "Cohort" value.
+
+Note that, for the "Average credits to degree" `Measure`, the cohort value is
+not commensurable with the outcome value.
+It's OK for the number of credits earned to be larger than the number of people
+in a cohort.
+
+```{r check_outsized_outcomes}
+too_big <- dashboard_data |>
+    dplyr::filter(
+        is.finite(.data$Cohort),
+        is.finite(.data$Outcome),
+        .data$Cohort < .data$Outcome
+    )
+
+knitr::kable(too_big)
+```

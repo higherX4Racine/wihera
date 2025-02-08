@@ -12,10 +12,10 @@
 *-Ex.R
 
 # Output files from R CMD build
-/*.tar.gz
+*.tar.gz
 
 # Output files from R CMD check
-/*.Rcheck/
+*.Rcheck/
 
 # RStudio files
 .Rproj.user/
@@ -29,7 +29,7 @@ vignettes/*.pdf
 
 # knitr and R markdown default cache directories
 *_cache/
-/cache/
+*/cache/
 
 # Temporary files created by R markdown
 *.utf8.md

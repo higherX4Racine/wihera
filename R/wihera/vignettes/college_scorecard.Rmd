@@ -19,7 +19,8 @@ knitr::opts_chunk$set(
     Sys.getenv() |>
     file.path(
         "Downloads",
-        "US Dept of Ed College Scorecard"
+        "US Dept of Ed",
+        "College Scorecard"
     )
 
 .SCORECARD_FILES <- .DATA_DIR |>

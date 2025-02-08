@@ -10,8 +10,10 @@
 #' find_matching_files("f", c("foo", "bar", "baz", "~$foo"))
 find_matching_files <- function(.pattern, .files){
     detection <- stringr::str_subset(.files,
-                                     paste0("^(?!~).*",
-                                            .pattern))
+                                     stringr::regex(
+                                         paste0("^(?!~).*", .pattern),
+                                         ignore_case = TRUE)
+    )
     if (length(detection) == 0) {
         return(NA)
     } else if (length(detection) > 1) {
